@@ -47,17 +47,17 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-row flex-wrap gap-3">
             <Link
-              href="/products?category=veg"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-primary-green text-white font-semibold rounded-lg hover:bg-primary-green-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm"
+              href="#categories"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-green text-white font-semibold rounded-lg hover:bg-primary-green-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm cursor-pointer"
             >
-              🌿 Shop Veg Pickles
+              Explore Categories
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/products?category=nonveg"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-primary-red text-white font-semibold rounded-lg hover:bg-primary-red-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm"
+              href="/products"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-red text-white font-semibold rounded-lg hover:bg-primary-red-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm cursor-pointer"
             >
-              🍖 Shop Non-Veg Pickles
+              Shop Now
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

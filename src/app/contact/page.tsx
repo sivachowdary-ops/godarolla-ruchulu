@@ -2,7 +2,8 @@
 
 import { siteConfig } from '@/config/site';
 import { buildWhatsAppInquiryUrl } from '@/lib/utils';
-import { MapPin, Phone, Mail, Clock, MessageCircle, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
 import React, { useState } from 'react';
 
 export default function ContactPage() {
@@ -194,7 +195,7 @@ export default function ContactPage() {
                   type="submit"
                   className="flex items-center justify-center gap-2 w-full py-3.5 bg-whatsapp hover:bg-whatsapp-dark text-white rounded-lg font-bold text-sm shadow transition-colors cursor-pointer min-h-[48px]"
                 >
-                  <MessageCircle className="w-5 h-5 fill-white" />
+                  <WhatsAppIcon className="w-5 h-5" />
                   Send Inquiry on WhatsApp
                 </button>
               </form>

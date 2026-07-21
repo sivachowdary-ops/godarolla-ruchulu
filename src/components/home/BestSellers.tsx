@@ -21,7 +21,7 @@ export async function BestSellers() {
             Our Best Sellers
           </h2>
           <p className="text-text-muted mt-3 max-w-lg mx-auto">
-            The most loved pickles from our collection — tried, tasted, and adored by our customers.
+            The most loved items from our collection — tried, tasted, and adored by our customers.
           </p>
           <div className="section-divider mt-6" />
         </div>
@@ -45,7 +45,7 @@ export async function BestSellers() {
             href="/products"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-text-charcoal text-white font-semibold rounded-lg hover:bg-text-charcoal/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
           >
-            View All Pickles
+            View All Products
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

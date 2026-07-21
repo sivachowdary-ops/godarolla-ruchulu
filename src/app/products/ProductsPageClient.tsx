@@ -36,7 +36,9 @@ export function ProductsPageClient({ products }: ProductsPageClientProps) {
     if (activeCategory === 'podulu') return product.category === 'podulu';
     if (activeCategory === 'seeds') return product.category === 'seeds';
     if (activeCategory === 'jellies') return product.category === 'jellies';
-    return true;
+    
+    // Default 'all' tab should only show pickles (veg and non-veg)
+    return product.category === 'veg' || product.category === 'nonveg';
   });
 
   return (

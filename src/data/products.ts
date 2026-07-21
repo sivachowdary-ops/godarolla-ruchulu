@@ -58,7 +58,6 @@ export const products: Product[] = [
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
-    isBestSeller: true,
     spiceLevel: 'hot',
   },
   {
@@ -91,7 +90,6 @@ export const products: Product[] = [
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
-    isBestSeller: true,
     spiceLevel: 'medium',
   },
   {
@@ -156,7 +154,6 @@ export const products: Product[] = [
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
-    isBestSeller: true,
     spiceLevel: 'hot',
   },
   {
@@ -391,7 +388,6 @@ export const products: Product[] = [
     isVeg: false,
     isActive: true,
     isPriceTBD: false,
-    isBestSeller: true,
     spiceLevel: 'hot',
   },
   {
@@ -425,7 +421,6 @@ export const products: Product[] = [
     isVeg: false,
     isActive: true,
     isPriceTBD: false,
-    isBestSeller: true,
     spiceLevel: 'hot',
   },
   {
@@ -508,6 +503,7 @@ export const products: Product[] = [
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
+    isBestSeller: true,
   },
   {
     id: 'podulu-002',
@@ -777,6 +773,7 @@ export const products: Product[] = [
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
+    isBestSeller: true,
   },
   {
     id: 'seeds-002',
@@ -850,6 +847,7 @@ export const products: Product[] = [
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
+    isBestSeller: true,
   },
   {
     id: 'jellies-002',
