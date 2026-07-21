@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MessageCircle } from 'lucide-react';
+import { WhatsAppIcon } from './WhatsAppIcon';
 import { buildWhatsAppInquiryUrl } from '@/lib/utils';
 
 export function WhatsAppButton() {
@@ -47,7 +47,7 @@ export function WhatsAppButton() {
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        <MessageCircle className="w-7 h-7 fill-white" />
+        <WhatsAppIcon className="w-7 h-7" />
       </button>
     </div>
   );

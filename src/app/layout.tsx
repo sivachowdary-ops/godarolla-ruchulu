@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/Footer';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { CheckoutModal } from '@/components/checkout/CheckoutModal';
+import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
@@ -112,11 +113,14 @@ export default function RootLayout({
     >
       <body className="font-body bg-bg-cream text-text-charcoal antialiased">
         <CartProvider>
-          <AnnouncementBar />
-          <Navbar />
+          <div className="sticky top-0 z-50 w-full flex flex-col">
+            <AnnouncementBar />
+            <Navbar />
+          </div>
           <main className="min-h-screen">{children}</main>
           <Footer />
           <WhatsAppButton />
+          <FloatingCartButton />
           <CartDrawer />
           <CheckoutModal />
         </CartProvider>

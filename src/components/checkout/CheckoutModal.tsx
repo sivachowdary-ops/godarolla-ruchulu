@@ -11,8 +11,9 @@ import {
   isValidMobile,
   isValidPincode,
 } from '@/lib/utils';
+import { X, ClipboardCheck, Sparkles, AlertCircle } from 'lucide-react';
+import { WhatsAppIcon } from '../ui/WhatsAppIcon';
 import { siteConfig, indianStates } from '@/config/site';
-import { X, MessageCircle, ClipboardCheck, Sparkles, AlertCircle } from 'lucide-react';
 
 export function CheckoutModal() {
   const {
@@ -190,7 +191,7 @@ export function CheckoutModal() {
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 w-full py-3.5 bg-whatsapp hover:bg-whatsapp-dark text-white rounded-lg font-bold text-sm shadow-md transition-colors"
                 >
-                  <MessageCircle className="w-5 h-5 fill-white" />
+                  <WhatsAppIcon className="w-5 h-5" />
                   Resend WhatsApp Message
                 </a>
                 <button
@@ -367,7 +368,7 @@ export function CheckoutModal() {
                 type="submit"
                 className="flex items-center justify-center gap-2 w-full py-4 bg-primary-green hover:bg-primary-green-dark text-white rounded-lg font-bold text-sm shadow-md hover:shadow-lg transition-all cursor-pointer min-h-[48px]"
               >
-                <MessageCircle className="w-5 h-5 fill-white" />
+                <WhatsAppIcon className="w-5 h-5" />
                 Place Order via WhatsApp
               </button>
             </form>

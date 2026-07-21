@@ -5,7 +5,34 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 
 export async function BestSellers() {
   const allProducts = await getProducts();
-  const bestSellers = allProducts.filter(p => p.isActive && p.isBestSeller);
+  const rawBestSellers = allProducts.filter(p => p.isActive && p.isBestSeller);
+
+  // Group best sellers by category to interleave them
+  const categoriesMap: { [key: string]: any[] } = {};
+  rawBestSellers.forEach(product => {
+    if (!categoriesMap[product.category]) {
+      categoriesMap[product.category] = [];
+    }
+    categoriesMap[product.category].push(product);
+  });
+
+  const scatteredBestSellers: any[] = [];
+  const categoriesList = ['veg', 'nonveg', 'podulu', 'seeds', 'jellies'];
+  
+  // Find maximum array length
+  const arrays = Object.values(categoriesMap);
+  const maxLen = arrays.length > 0 ? Math.max(...arrays.map(arr => arr.length)) : 0;
+
+  for (let i = 0; i < maxLen; i++) {
+    categoriesList.forEach(cat => {
+      if (categoriesMap[cat] && categoriesMap[cat][i]) {
+        scatteredBestSellers.push(categoriesMap[cat][i]);
+      }
+    });
+  }
+
+  // Slice to maximum 12 items
+  const bestSellers = scatteredBestSellers.slice(0, 12);
 
   return (
     <section className="py-16 md:py-20 bg-white">
@@ -21,7 +48,7 @@ export async function BestSellers() {
             Our Best Sellers
           </h2>
           <p className="text-text-muted mt-3 max-w-lg mx-auto">
-            The most loved pickles from our collection — tried, tasted, and adored by our customers.
+            The most loved items from our collection — tried, tasted, and adored by our customers.
           </p>
           <div className="section-divider mt-6" />
         </div>
@@ -45,7 +72,7 @@ export async function BestSellers() {
             href="/products"
             className="inline-flex items-center gap-2 px-8 py-3.5 bg-text-charcoal text-white font-semibold rounded-lg hover:bg-text-charcoal/90 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
           >
-            View All Pickles
+            View All Products
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

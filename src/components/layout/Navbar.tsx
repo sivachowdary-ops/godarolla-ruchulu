@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, ChevronDown } from 'lucide-react';
 import { siteConfig } from '@/config/site';
 
 export function Navbar() {
   const { getItemCount, setIsCartOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false);
 
   const cartCount = getItemCount();
 
@@ -30,19 +31,19 @@ export function Navbar() {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+    setIsMobileCategoriesOpen(false);
   };
 
-  const navLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Pickles Catalog', href: '/products' },
-    { label: 'Podulu', href: '/products?category=podulu' },
-    { label: 'Seeds', href: '/products?category=seeds' },
-    { label: 'Jellies', href: '/products?category=jellies' },
-    { label: 'Contact', href: '/contact' },
+  const categoryItems = [
+    { label: 'Veg Pickles 🌿', href: '/products?category=veg' },
+    { label: 'Non-Veg Pickles 🍖', href: '/products?category=nonveg' },
+    { label: 'Podulu 🥣', href: '/products?category=podulu' },
+    { label: 'Seeds 🌻', href: '/products?category=seeds' },
+    { label: 'Jellies 🍬', href: '/products?category=jellies' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-border-warm shadow-sm">
+    <header className="w-full bg-white/90 backdrop-blur-md border-b border-border-warm shadow-sm">
       <div className="container mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo & Name */}
         <Link href="/" className="flex items-center gap-3 group" onClick={closeMobileMenu}>
@@ -66,15 +67,49 @@ export function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-text-charcoal font-semibold hover:text-primary-red transition-colors text-sm uppercase tracking-wider"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            href="/"
+            className="text-text-charcoal font-semibold hover:text-primary-red transition-colors text-sm uppercase tracking-wider cursor-pointer"
+          >
+            Home
+          </Link>
+
+          {/* Hover Categories Dropdown */}
+          <div className="relative group py-2">
+            <button className="flex items-center gap-1 text-text-charcoal font-semibold hover:text-primary-red transition-colors text-sm uppercase tracking-wider cursor-pointer focus:outline-none">
+              <span>Categories</span>
+              <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+            </button>
+
+            {/* Dropdown Box */}
+            <div className="absolute left-0 mt-2 w-52 bg-white border border-border-warm rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+              <div className="py-1">
+                {categoryItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block px-5 py-3 text-xs md:text-sm text-text-charcoal hover:bg-bg-cream-dark hover:text-primary-red transition-colors font-medium border-b last:border-0 border-border-warm/20"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <Link
+            href="/contact"
+            className="text-text-charcoal font-semibold hover:text-primary-red transition-colors text-sm uppercase tracking-wider cursor-pointer"
+          >
+            Contact
+          </Link>
+
+          <Link
+            href="/#faq"
+            className="text-text-charcoal font-semibold hover:text-primary-red transition-colors text-sm uppercase tracking-wider cursor-pointer"
+          >
+            FAQs
+          </Link>
         </nav>
 
         {/* Right Actions */}
@@ -106,10 +141,77 @@ export function Navbar() {
 
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
+<<<<<<< HEAD
         <div 
           className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] transition-opacity duration-300"
           onClick={closeMobileMenu}
         />
+=======
+        <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-border-warm shadow-md z-40 transition-all duration-300">
+          <nav className="flex flex-col py-4 px-6 gap-3">
+            <Link
+              href="/"
+              className="text-text-charcoal font-semibold py-2.5 hover:text-primary-red transition-colors border-b border-bg-cream-dark"
+              onClick={closeMobileMenu}
+            >
+              Home
+            </Link>
+
+            {/* Mobile Expandable Categories */}
+            <div className="border-b border-bg-cream-dark py-1">
+              <button
+                onClick={() => setIsMobileCategoriesOpen(!isMobileCategoriesOpen)}
+                className="flex items-center justify-between w-full text-text-charcoal font-semibold py-2 hover:text-primary-red transition-colors focus:outline-none"
+              >
+                <span>Categories</span>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isMobileCategoriesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {isMobileCategoriesOpen && (
+                <div className="flex flex-col pl-4 gap-2.5 py-2 animate-fade-in">
+                  {categoryItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="text-text-muted hover:text-primary-red text-sm py-1 transition-colors"
+                      onClick={closeMobileMenu}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <Link
+              href="/contact"
+              className="text-text-charcoal font-semibold py-2.5 hover:text-primary-red transition-colors border-b border-bg-cream-dark"
+              onClick={closeMobileMenu}
+            >
+              Contact
+            </Link>
+
+            <Link
+              href="/#faq"
+              className="text-text-charcoal font-semibold py-2.5 hover:text-primary-red transition-colors border-b border-bg-cream-dark last:border-0"
+              onClick={closeMobileMenu}
+            >
+              FAQs
+            </Link>
+
+            <button
+              onClick={() => {
+                closeMobileMenu();
+                setIsCartOpen(true);
+              }}
+              className="flex items-center justify-center gap-2 mt-3 w-full py-3 bg-primary-green hover:bg-primary-green-dark text-white rounded-lg font-semibold transition-colors cursor-pointer"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              View Cart ({cartCount})
+            </button>
+          </nav>
+        </div>
+>>>>>>> 907a04eef72912b9d154e70d4a58b1eb0f479a9f
       )}
 
       {/* Mobile Drawer (Slide in from right) */}

@@ -3,6 +3,7 @@ import { Product } from '@/types';
 import { withDataCache, CACHE_TAGS } from '../cache/cacheService';
 import { mapSupabaseToProduct } from '../utils/mapper';
 import { DBCategory, getActiveCategorySlugs } from './categoriesService';
+import { products as staticProducts } from '@/data/products';
 
 export interface DBProduct {
   id: string;
@@ -26,19 +27,31 @@ export interface DBProduct {
  * Internal fetcher for products
  */
 async function fetchProducts(): Promise<Product[]> {
+  const isMissingKeys = !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (isMissingKeys) {
+    console.log('Using static products catalog (Supabase keys not configured).');
+    return staticProducts;
+  }
+
   try {
     const { data: productsData, error: productsError } = await supabase
       .from('products')
       .select('*, categories(*)');
 
     if (productsError) {
-      console.error('Failed to fetch products from Supabase:', productsError);
-      return [];
+      console.error('Failed to fetch products from Supabase, falling back to static:', productsError);
+      return staticProducts;
+    }
+
+    // If database exists but has no products, return static products as base
+    if (!productsData || productsData.length === 0) {
+      console.log('No products found in database, falling back to static products.');
+      return staticProducts;
     }
 
     const activeSlugs = await getActiveCategorySlugs();
 
-    return (productsData || []).map((row: any) => {
+    return productsData.map((row: any) => {
       return mapSupabaseToProduct(
         row as DBProduct, 
         row.categories as DBCategory,
@@ -46,8 +59,8 @@ async function fetchProducts(): Promise<Product[]> {
       );
     });
   } catch (error) {
-    console.error('Failed to fetch products:', error);
-    return [];
+    console.error('Failed to fetch products, falling back to static:', error);
+    return staticProducts;
   }
 }
 
@@ -65,6 +78,11 @@ export const getProducts = withDataCache(
  * Internal fetcher for a single product by slug
  */
 async function fetchProductBySlug(slug: string): Promise<Product | undefined> {
+  const isMissingKeys = !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (isMissingKeys) {
+    return staticProducts.find((p) => p.slug === slug);
+  }
+
   try {
     const { data: productsData, error: productsError } = await supabase
       .from('products')
@@ -73,10 +91,12 @@ async function fetchProductBySlug(slug: string): Promise<Product | undefined> {
       .single();
 
     if (productsError) {
-      console.error(`Failed to fetch product ${slug} from Supabase:`, productsError);
-      return undefined;
+      console.error(`Failed to fetch product ${slug} from Supabase, falling back to static:`, productsError);
+      return staticProducts.find((p) => p.slug === slug);
     }
-    if (!productsData) return undefined;
+    if (!productsData) {
+      return staticProducts.find((p) => p.slug === slug);
+    }
 
     const activeSlugs = await getActiveCategorySlugs();
 
@@ -86,8 +106,8 @@ async function fetchProductBySlug(slug: string): Promise<Product | undefined> {
       activeSlugs
     );
   } catch (error) {
-    console.error(`Failed to fetch product ${slug}:`, error);
-    return undefined;
+    console.error(`Failed to fetch product ${slug}, falling back to static:`, error);
+    return staticProducts.find((p) => p.slug === slug);
   }
 }
 

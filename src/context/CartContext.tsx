@@ -71,8 +71,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
       return [...prev, { product, weight, quantity, price }];
     });
-
-    setIsCartOpen(true);
   }, []);
 
   const removeFromCart = useCallback((productId: string, weight: WeightTier) => {

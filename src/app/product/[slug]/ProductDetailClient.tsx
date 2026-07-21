@@ -11,7 +11,6 @@ import { siteConfig } from '@/config/site';
 import {
   ShoppingCart,
   Check,
-  MessageCircle,
   ArrowLeft,
   ShieldCheck,
   Plane,
@@ -19,6 +18,7 @@ import {
   Minus,
   AlertTriangle,
 } from 'lucide-react';
+import { WhatsAppIcon } from '@/components/ui/WhatsAppIcon';
 
 interface ProductDetailClientProps {
   product: Product | null;
@@ -200,7 +200,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                       onClick={handleWhatsAppInquiry}
                       className="flex items-center justify-center gap-2 w-full py-3 bg-whatsapp hover:bg-whatsapp-dark text-white rounded-lg font-bold text-sm shadow transition-colors cursor-pointer"
                     >
-                      <MessageCircle className="w-4 h-4 fill-white" />
+                      <WhatsAppIcon className="w-4 h-4" />
                       Inquire via WhatsApp
                     </button>
                   </div>
@@ -297,7 +297,7 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
                         onClick={handleWhatsAppInquiry}
                         className="flex items-center justify-center gap-2 sm:px-6 py-3.5 bg-bg-cream hover:bg-bg-cream-dark text-text-charcoal rounded-lg font-bold text-sm transition-colors border border-border-warm min-h-[48px] cursor-pointer"
                       >
-                        <MessageCircle className="w-5 h-5 text-primary-green fill-primary-green" />
+                        <WhatsAppIcon className="w-5 h-5 text-primary-green" />
                         Ask Questions
                       </button>
                     </div>
