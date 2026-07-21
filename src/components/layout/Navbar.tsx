@@ -32,7 +32,7 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md border-b border-border-warm shadow-sm">
+    <header className="w-full bg-white/90 backdrop-blur-md border-b border-border-warm shadow-sm">
       <div className="container mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
         {/* Brand Logo & Name */}
         <Link href="/" className="flex items-center gap-3 group" onClick={closeMobileMenu}>
@@ -91,6 +91,13 @@ export function Navbar() {
             className="text-text-charcoal font-semibold hover:text-primary-red transition-colors text-sm uppercase tracking-wider cursor-pointer"
           >
             Contact
+          </Link>
+
+          <Link
+            href="/#faq"
+            className="text-text-charcoal font-semibold hover:text-primary-red transition-colors text-sm uppercase tracking-wider cursor-pointer"
+          >
+            FAQs
           </Link>
         </nav>
 
@@ -161,10 +168,18 @@ export function Navbar() {
 
             <Link
               href="/contact"
-              className="text-text-charcoal font-semibold py-2.5 hover:text-primary-red transition-colors border-b border-bg-cream-dark last:border-0"
+              className="text-text-charcoal font-semibold py-2.5 hover:text-primary-red transition-colors border-b border-bg-cream-dark"
               onClick={closeMobileMenu}
             >
               Contact
+            </Link>
+
+            <Link
+              href="/#faq"
+              className="text-text-charcoal font-semibold py-2.5 hover:text-primary-red transition-colors border-b border-bg-cream-dark last:border-0"
+              onClick={closeMobileMenu}
+            >
+              FAQs
             </Link>
 
             <button

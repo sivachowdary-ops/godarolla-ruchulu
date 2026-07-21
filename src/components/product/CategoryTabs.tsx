@@ -7,7 +7,7 @@ interface CategoryTabsProps {
 
 export function CategoryTabs({ activeCategory, onCategoryChange }: CategoryTabsProps) {
   const tabs = [
-    { id: 'all', label: 'All Pickles 🌶#' },
+    { id: 'all', label: 'All Products 🛍️' },
     { id: 'veg', label: 'Veg Pickles 🌿' },
     { id: 'nonveg', label: 'Non-Veg Pickles 🍖' },
     { id: 'podulu', label: 'Podulu 🥣' },

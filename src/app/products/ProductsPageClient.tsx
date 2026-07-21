@@ -37,8 +37,8 @@ export function ProductsPageClient({ products }: ProductsPageClientProps) {
     if (activeCategory === 'seeds') return product.category === 'seeds';
     if (activeCategory === 'jellies') return product.category === 'jellies';
     
-    // Default 'all' tab should only show pickles (veg and non-veg)
-    return product.category === 'veg' || product.category === 'nonveg';
+    // Default 'all' tab displays all products
+    return true;
   });
 
   return (
@@ -46,7 +46,7 @@ export function ProductsPageClient({ products }: ProductsPageClientProps) {
       {/* Page Header */}
       <div className="text-center max-w-xl mx-auto mb-8">
         <h1 className="font-heading font-extrabold text-3xl md:text-4xl text-text-charcoal">
-          Pickles Catalog
+          Our Store Catalog
         </h1>
         <p className="text-text-muted text-sm md:text-base mt-2">
           Explore our traditional Andhra pickles. Pick from raw mango, garlic, sorrel leaf, spiced chicken, prawn, and more.
