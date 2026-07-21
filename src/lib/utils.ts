@@ -2,7 +2,7 @@
 // Godarolla Ruchulu — Utility Functions
 // ============================================
 
-import { CartItem, CheckoutFormData } from '@/types';
+import { CartItem, CheckoutFormData, Product } from '@/types';
 import { siteConfig } from '@/config/site';
 
 /**
@@ -101,3 +101,17 @@ export function isValidMobile(number: string): boolean {
 export function cn(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
+
+export const getPrice = (product: Product, weight: '250g' | '500g' | '1kg'): number | null => {
+  switch (weight) {
+    case '250g': return product.price250g;
+    case '500g': return product.price500g;
+    case '1kg': return product.price1kg;
+    default: return null;
+  }
+};
+
+export const formatPriceString = (price: number | null): string => {
+  if (price === null) return 'Price TBD';
+  return `₹${price}`;
+};

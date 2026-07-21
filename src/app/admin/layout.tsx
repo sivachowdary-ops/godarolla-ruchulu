@@ -1,22 +1,29 @@
 'use client';
 
-import { AdminProvider } from '@/context/AdminContext';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ShoppingBag, Database, ArrowLeft, LogOut } from 'lucide-react';
-import { useAdmin } from '@/context/AdminContext';
+import { usePathname, useRouter } from 'next/navigation';
+import { LayoutDashboard, Database, ArrowLeft, LogOut } from 'lucide-react';
+import { logout } from '@/app/actions/admin';
+import { useState } from 'react';
 
 function AdminNavigation() {
   const pathname = usePathname();
-  const { isAuthenticated, logout } = useAdmin();
+  const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  if (!isAuthenticated || pathname === '/admin/login') return null;
+  if (pathname === '/admin/login') return null;
 
   const links = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { label: 'Orders Received', href: '/admin/orders', icon: ShoppingBag },
     { label: 'Manage Products', href: '/admin/products', icon: Database },
   ];
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await logout();
+    router.push('/admin/login');
+    router.refresh();
+  };
 
   return (
     <aside className="w-full lg:w-64 bg-text-charcoal text-white shrink-0 border-r border-white/10 flex flex-col font-body">
@@ -56,11 +63,12 @@ function AdminNavigation() {
       {/* Logout button */}
       <div className="p-4 border-t border-white/10">
         <button
-          onClick={logout}
-          className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-semibold text-primary-red hover:bg-primary-red/10 transition-colors cursor-pointer"
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-semibold text-primary-red hover:bg-primary-red/10 transition-colors cursor-pointer disabled:opacity-50"
         >
           <LogOut className="w-4 h-4 shrink-0" />
-          <span>Sign Out</span>
+          <span>{isLoggingOut ? 'Signing out...' : 'Sign Out'}</span>
         </button>
       </div>
     </aside>
@@ -69,11 +77,9 @@ function AdminNavigation() {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AdminProvider>
-      <div className="flex flex-col lg:flex-row min-h-screen bg-bg-cream/10">
-        <AdminNavigation />
-        <main className="flex-grow p-4 md:p-8 overflow-y-auto">{children}</main>
-      </div>
-    </AdminProvider>
+    <div className="flex flex-col lg:flex-row min-h-screen bg-bg-cream/10">
+      <AdminNavigation />
+      <main className="flex-grow p-4 md:p-8 overflow-y-auto">{children}</main>
+    </div>
   );
 }

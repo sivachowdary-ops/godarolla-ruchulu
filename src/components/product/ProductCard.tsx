@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { Product, WeightTier } from '@/types';
-import { getPrice, formatPrice } from '@/data/products';
+import { getPrice, formatPriceString as formatPrice } from '@/lib/utils';
 import { ShoppingCart, Check, ShieldAlert } from 'lucide-react';
 
 interface ProductCardProps {

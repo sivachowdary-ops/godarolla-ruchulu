@@ -1,8 +1,8 @@
 import { MetadataRoute } from 'next';
-import { products } from '@/data/products';
+import { getProducts } from '@/lib/services/productsService';
 import { siteConfig } from '@/config/site';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = siteConfig.url;
 
   // Define static routes
@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Define dynamic product detail routes
+  const products = await getProducts();
   const productRoutes = products
     .filter((p) => p.isActive)
     .map((p) => ({

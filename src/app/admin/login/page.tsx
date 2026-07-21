@@ -1,33 +1,35 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { useAdmin } from '@/context/AdminContext';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { KeyRound, ShieldAlert } from 'lucide-react';
+import { KeyRound, ShieldAlert, Mail } from 'lucide-react';
 import Image from 'next/image';
+import { login } from '@/app/actions/admin';
 
 export default function AdminLoginPage() {
-  const { isAuthenticated, login } = useAdmin();
   const router = useRouter();
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Redirect if already authenticated
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push('/admin');
-    }
-  }, [isAuthenticated, router]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
-    const success = login(password);
-    if (success) {
-      router.push('/admin');
-    } else {
-      setError('Invalid password. Please try again.');
+    try {
+      const formData = new FormData(e.currentTarget);
+      const result = await login(formData);
+      
+      if (result.success) {
+        router.push('/admin');
+        router.refresh(); // Force a refresh to ensure middleware picks up the new cookie
+      } else {
+        setError(result.error || 'Login failed');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -54,28 +56,42 @@ export default function AdminLoginPage() {
         </div>
 
         {/* Form */}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="password-input" className="text-xs font-bold uppercase text-text-charcoal tracking-wide flex justify-between">
-                <span>Enter Password</span>
-                <span className="text-[10px] text-text-muted font-normal lowercase">(default: vsm-change-me)</span>
-              </label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
-                  <KeyRound className="w-5 h-5" />
-                </div>
-                <input
-                  id="password-input"
-                  name="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="pl-10 pr-3 py-3 w-full rounded-lg border border-border-warm text-sm focus:outline-none focus:border-accent-gold bg-bg-cream/10"
-                />
+        <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="email-input" className="text-xs font-bold uppercase text-text-charcoal tracking-wide flex justify-between">
+              <span>Email Address</span>
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
+                <Mail className="w-5 h-5" />
               </div>
+              <input
+                id="email-input"
+                name="email"
+                type="email"
+                required
+                placeholder="admin@godarollaruchulu.com"
+                className="pl-10 pr-3 py-3 w-full rounded-lg border border-border-warm text-sm focus:outline-none focus:border-accent-gold bg-bg-cream/10"
+              />
+            </div>
+          </div>
+          
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="password-input" className="text-xs font-bold uppercase text-text-charcoal tracking-wide flex justify-between">
+              <span>Enter Password</span>
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
+                <KeyRound className="w-5 h-5" />
+              </div>
+              <input
+                id="password-input"
+                name="password"
+                type="password"
+                required
+                placeholder="••••••••••••"
+                className="pl-10 pr-3 py-3 w-full rounded-lg border border-border-warm text-sm focus:outline-none focus:border-accent-gold bg-bg-cream/10"
+              />
             </div>
           </div>
 
@@ -87,12 +103,13 @@ export default function AdminLoginPage() {
             </div>
           )}
 
-          <div>
+          <div className="pt-2">
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-primary-red hover:bg-primary-red-dark focus:outline-none shadow transition-colors cursor-pointer"
+              disabled={isLoading}
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-primary-red hover:bg-primary-red-dark focus:outline-none shadow transition-colors cursor-pointer disabled:opacity-70"
             >
-              Sign In to Dashboard
+              {isLoading ? 'Authenticating...' : 'Sign In to Dashboard'}
             </button>
           </div>
         </form>

@@ -1,12 +1,11 @@
-'use client';
-
-import { getBestSellers } from '@/data/products';
+import { getProducts } from '@/lib/services/productsService';
 import { ProductCard } from '@/components/product/ProductCard';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
-export function BestSellers() {
-  const bestSellers = getBestSellers();
+export async function BestSellers() {
+  const allProducts = await getProducts();
+  const bestSellers = allProducts.filter(p => p.isActive && p.isBestSeller);
 
   return (
     <section className="py-16 md:py-20 bg-white">

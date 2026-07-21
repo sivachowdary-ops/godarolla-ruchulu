@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useAdmin } from '@/context/AdminContext';
+
 import { useRouter } from 'next/navigation';
 import { Order, OrderStatus } from '@/types';
 import { formatCurrency } from '@/lib/utils';
@@ -17,32 +17,23 @@ import {
 } from 'lucide-react';
 
 export default function AdminOrdersPage() {
-  const { isAuthenticated } = useAdmin();
-  const router = useRouter();
-
+  const [mounted, setMounted] = useState(false);
   const [orders, setOrders] = useState<Order[]>([]);
   const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
   const [selectedOrderForInvoice, setSelectedOrderForInvoice] = useState<Order | null>(null);
 
-  // Auth redirect
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/admin/login');
-    }
-  }, [isAuthenticated, router]);
-
   // Load orders
   useEffect(() => {
-    if (!isAuthenticated) return;
+    setMounted(true);
     try {
       const stored: Order[] = JSON.parse(localStorage.getItem('godarolla-orders') || '[]');
       setOrders(stored);
     } catch {
       // LocalStorage access issues
     }
-  }, [isAuthenticated]);
+  }, []);
 
-  if (!isAuthenticated) return null;
+  if (!mounted) return null;
 
   const toggleExpand = (id: string) => {
     setExpandedOrderId(expandedOrderId === id ? null : id);

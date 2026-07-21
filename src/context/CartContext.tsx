@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { CartItem, Product, WeightTier } from '@/types';
-import { getPrice } from '@/data/products';
+import { getPrice } from '@/lib/utils';
 
 interface CartContextType {
   items: CartItem[];
