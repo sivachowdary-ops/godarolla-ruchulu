@@ -24,6 +24,9 @@ export function Navbar() {
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Pickles Catalog', href: '/products' },
+    { label: 'Podulu', href: '/products?category=podulu' },
+    { label: 'Seeds', href: '/products?category=seeds' },
+    { label: 'Jellies', href: '/products?category=jellies' },
     { label: 'Contact', href: '/contact' },
   ];
 

@@ -10,6 +10,9 @@ export function CategoryTabs({ activeCategory, onCategoryChange }: CategoryTabsP
     { id: 'all', label: 'All Pickles 🌶️' },
     { id: 'veg', label: 'Veg Pickles 🌿' },
     { id: 'nonveg', label: 'Non-Veg Pickles 🍖' },
+    { id: 'podulu', label: 'Podulu 🥣' },
+    { id: 'seeds', label: 'Seeds 🌻' },
+    { id: 'jellies', label: 'Jellies 🍬' },
   ];
 
   return (

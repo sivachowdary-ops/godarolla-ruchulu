@@ -2,7 +2,7 @@
 // Godarolla Ruchulu — Type Definitions
 // ============================================
 
-export type ProductCategory = 'veg' | 'nonveg';
+export type ProductCategory = 'veg' | 'nonveg' | 'podulu' | 'seeds' | 'jellies';
 
 export type OrderStatus = 'new' | 'confirmed' | 'packed' | 'shipped' | 'delivered' | 'cancelled';
 

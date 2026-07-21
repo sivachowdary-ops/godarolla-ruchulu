@@ -15,8 +15,8 @@ function ProductsContent() {
   // Sync tab with URL query parameter
   useEffect(() => {
     const categoryQuery = searchParams.get('category');
-    if (categoryQuery === 'veg' || categoryQuery === 'nonveg') {
-      setActiveCategory(categoryQuery);
+    if (['veg', 'nonveg', 'podulu', 'seeds', 'jellies'].includes(categoryQuery || '')) {
+      setActiveCategory(categoryQuery as string);
     } else {
       setActiveCategory('all');
     }
@@ -27,8 +27,11 @@ function ProductsContent() {
     // Basic active check (hide TBD products that are inactive until pricing is confirmed)
     if (!product.isActive && product.isPriceTBD) return false;
 
-    if (activeCategory === 'veg') return product.isVeg;
-    if (activeCategory === 'nonveg') return !product.isVeg;
+    if (activeCategory === 'veg') return product.category === 'veg';
+    if (activeCategory === 'nonveg') return product.category === 'nonveg';
+    if (activeCategory === 'podulu') return product.category === 'podulu';
+    if (activeCategory === 'seeds') return product.category === 'seeds';
+    if (activeCategory === 'jellies') return product.category === 'jellies';
     return true;
   });
 
