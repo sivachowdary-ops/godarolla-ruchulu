@@ -199,32 +199,63 @@ export async function updateProductAction(id: string, formData: FormData) {
   }
 }
 
-export async function setProductStatusAction(id: string, is_active: boolean) {
+export async function deleteProductAction(id: string) {
   await checkAuth();
   const supabase = getAdminSupabase();
-  const { error } = await supabase.from('products').update({ is_active }).eq('id', id);
-  if (error) return { success: false, error: error.message };
   
-  await logAction(supabase, is_active ? 'RESTORE_PRODUCT' : 'ARCHIVE_PRODUCT', { productId: id });
-  revalidatePath('/');
-  revalidatePath('/products');
-  invalidateCache(CACHE_TAGS.PRODUCTS);
-  invalidateCache(CACHE_TAGS.CATEGORIES);
-  return { success: true };
+  try {
+    // 1. Fetch product to get image url and name
+    const { data: product, error: fetchError } = await supabase
+      .from('products')
+      .select('name, image_url')
+      .eq('id', id)
+      .single();
+      
+    if (fetchError || !product) {
+      return { success: false, error: 'Product not found' };
+    }
+
+    // 2. Delete the product from DB
+    const { error: deleteError } = await supabase
+      .from('products')
+      .delete()
+      .eq('id', id);
+
+    if (deleteError) {
+      return { success: false, error: 'Failed to delete product from database' };
+    }
+
+    // 3. Check if image is stored in Supabase and delete if true
+    if (product.image_url && product.image_url.includes('/storage/v1/object/public/product_images/')) {
+      const pathMatch = product.image_url.match(/product_images\/(.+)$/);
+      if (pathMatch) {
+        const imagePath = pathMatch[1];
+        await supabase.storage.from('product_images').remove([imagePath]);
+      }
+    }
+
+    await logAction(supabase, 'DELETE_PRODUCT', { productId: id, name: product.name });
+    
+    revalidatePath('/');
+    revalidatePath('/products');
+    invalidateCache(CACHE_TAGS.PRODUCTS);
+    invalidateCache(CACHE_TAGS.CATEGORIES);
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err.message || 'An error occurred during deletion' };
+  }
 }
 
 export async function getDashboardStats() {
   await checkAuth();
   const supabase = getAdminSupabase();
 
-  const { count: activeCount } = await supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true);
-  const { count: inactiveCount } = await supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', false);
+  const { count: activeCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
   const { count: categoriesCount } = await supabase.from('categories').select('*', { count: 'exact', head: true });
   const { count: totalProducts } = await supabase.from('products').select('*', { count: 'exact', head: true });
 
   return {
     activeProducts: activeCount || 0,
-    inactiveProducts: inactiveCount || 0,
     totalCategories: categoriesCount || 0,
     totalProducts: totalProducts || 0,
   };

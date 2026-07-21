@@ -40,13 +40,13 @@ export function Footer() {
             </h4>
             <ul className="flex flex-col gap-2.5 font-body text-sm text-white/70">
               <li>
-                <Link href="/" className="hover:text-accent-gold transition-colors">Home</Link>
+                <Link href="/" className="hover:text-accent-gold transition-colors block py-2">Home</Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-accent-gold transition-colors">Pickles Catalog</Link>
+                <Link href="/products" className="hover:text-accent-gold transition-colors block py-2">Pickles Catalog</Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-accent-gold transition-colors">Contact Us</Link>
+                <Link href="/contact" className="hover:text-accent-gold transition-colors block py-2">Contact Us</Link>
               </li>
             </ul>
           </div>
@@ -58,12 +58,12 @@ export function Footer() {
             </h4>
             <ul className="flex flex-col gap-2.5 font-body text-sm text-white/70">
               <li>
-                <Link href="/products?category=veg" className="hover:text-accent-gold transition-colors flex items-center gap-2">
+                <Link href="/products?category=veg" className="hover:text-accent-gold transition-colors flex items-center gap-2 py-2">
                   <span>🌿</span> Veg Pickles (వెజ్)
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=nonveg" className="hover:text-accent-gold transition-colors flex items-center gap-2">
+                <Link href="/products?category=nonveg" className="hover:text-accent-gold transition-colors flex items-center gap-2 py-2">
                   <span>🍖</span> Non-Veg Pickles (నాన్వెజ్)
                 </Link>
               </li>
@@ -82,13 +82,13 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-5 h-5 text-accent-gold shrink-0" />
-                <a href={`tel:${siteConfig.phone}`} className="hover:text-accent-gold transition-colors">
+                <a href={`tel:${siteConfig.phone}`} className="hover:text-accent-gold transition-colors block py-2">
                   {siteConfig.phone}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-5 h-5 text-accent-gold shrink-0" />
-                <a href={`mailto:${siteConfig.email}`} className="hover:text-accent-gold transition-colors break-all">
+                <a href={`mailto:${siteConfig.email}`} className="hover:text-accent-gold transition-colors break-all block py-2">
                   {siteConfig.email}
                 </a>
               </li>

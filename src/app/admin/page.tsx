@@ -1,12 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { getDashboardStats } from '@/app/actions/admin-mutations';
-import { LayoutDashboard, ShoppingBag, Database, ArrowRight, ShieldCheck, Box } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Database, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export default async function AdminDashboardPage() {
   const stats = await getDashboardStats().catch(() => ({
     activeProducts: 0,
-    inactiveProducts: 0,
     totalCategories: 0,
     totalProducts: 0,
   }));
@@ -18,13 +17,6 @@ export default async function AdminDashboardPage() {
       desc: 'Pickles active in catalog',
       icon: Database,
       color: 'bg-primary-green/10 text-primary-green',
-    },
-    {
-      title: 'Inactive Products',
-      value: stats.inactiveProducts,
-      desc: 'Archived pickles',
-      icon: Box,
-      color: 'bg-text-muted/10 text-text-muted',
     },
     {
       title: 'Categories',
@@ -53,7 +45,7 @@ export default async function AdminDashboardPage() {
         {cardItems.map((card) => {
           const Icon = card.icon;
           return (
-            <div key={card.title} className="bg-white p-6 border border-border-warm rounded-2xl shadow-sm flex items-center gap-5">
+            <div key={card.title} className="bg-white p-6 border border-border-warm rounded-2xl shadow-sm flex items-center gap-5 h-full">
               <div className={`p-4 rounded-xl shrink-0 ${card.color}`}>
                 <Icon className="w-6 h-6" />
               </div>

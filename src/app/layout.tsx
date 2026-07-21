@@ -29,6 +29,14 @@ const notoSansTelugu = Noto_Sans_Telugu({
   weight: ['400', '500', '600', '700'],
 });
 
+export const viewport = {
+  themeColor: '#e3d5ca',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://godarolla-ruchulu.vercel.app'),
   title: {

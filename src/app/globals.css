@@ -46,6 +46,7 @@ body {
   background-color: var(--color-bg-cream);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* Heading font family */
@@ -251,9 +252,9 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  min-width: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
   border-radius: 0.375rem;
   font-weight: 600;
   transition: background-color 0.2s;
@@ -276,4 +277,16 @@ textarea:focus-visible {
 ::selection {
   background-color: rgba(232, 185, 35, 0.3);
   color: var(--color-text-charcoal);
+}
+
+/* Accessibility and Mobile */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

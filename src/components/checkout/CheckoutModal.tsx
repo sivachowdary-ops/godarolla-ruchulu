@@ -250,6 +250,7 @@ export function CheckoutModal() {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     placeholder="Enter your full name"
+                    autoComplete="name"
                     className={`px-3 py-2.5 rounded-lg border text-sm focus:outline-none transition-all ${
                       errors.fullName ? 'border-primary-red bg-primary-red/5' : 'border-border-warm focus:border-accent-gold'
                     }`}
@@ -269,6 +270,8 @@ export function CheckoutModal() {
                     value={formData.whatsappNumber}
                     onChange={handleInputChange}
                     placeholder="E.g., 9876543210 (10-digit)"
+                    inputMode="tel"
+                    autoComplete="tel"
                     className={`px-3 py-2.5 rounded-lg border text-sm focus:outline-none transition-all ${
                       errors.whatsappNumber ? 'border-primary-red bg-primary-red/5' : 'border-border-warm focus:border-accent-gold'
                     }`}
@@ -288,6 +291,7 @@ export function CheckoutModal() {
                       name="state"
                       value={formData.state}
                       onChange={handleInputChange}
+                      autoComplete="address-level1"
                       className="px-3 py-2.5 rounded-lg border border-border-warm text-sm focus:outline-none focus:border-accent-gold bg-white"
                     >
                       {indianStates.map((state) => (
@@ -312,6 +316,8 @@ export function CheckoutModal() {
                       onChange={handleInputChange}
                       placeholder="6-digit pincode"
                       maxLength={6}
+                      inputMode="numeric"
+                      autoComplete="postal-code"
                       className={`px-3 py-2.5 rounded-lg border text-sm focus:outline-none transition-all ${
                         errors.pincode ? 'border-primary-red bg-primary-red/5' : 'border-border-warm focus:border-accent-gold'
                       }`}
@@ -332,6 +338,7 @@ export function CheckoutModal() {
                     onChange={handleInputChange}
                     placeholder="Enter complete shipping address (House No, Street, Landmark, City)"
                     rows={3}
+                    autoComplete="street-address"
                     className={`px-3 py-2.5 rounded-lg border text-sm focus:outline-none transition-all resize-none ${
                       errors.deliveryAddress ? 'border-primary-red bg-primary-red/5' : 'border-border-warm focus:border-accent-gold'
                     }`}

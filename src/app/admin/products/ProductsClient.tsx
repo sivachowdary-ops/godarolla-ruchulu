@@ -3,8 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Product } from '@/types';
 import { DBCategory } from '@/lib/services/categoriesService';
-import { createProductAction, updateProductAction, setProductStatusAction } from '@/app/actions/admin-mutations';
-import { Database, Plus, Search, Edit, Archive, RefreshCw, X, Save, Image as ImageIcon, Check } from 'lucide-react';
+import { createProductAction, updateProductAction, deleteProductAction } from '@/app/actions/admin-mutations';
+import { Database, Plus, Search, Edit, Trash2, X, Save, Image as ImageIcon, Check, AlertTriangle } from 'lucide-react';
 import Image from 'next/image';
 import imageCompression from 'browser-image-compression';
 import { formatCurrency } from '@/lib/utils';
@@ -18,7 +18,9 @@ interface ProductsClientProps {
 export default function ProductsClient({ initialProducts, categories }: ProductsClientProps) {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [search, setSearch] = useState('');
-  const [showArchived, setShowArchived] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,8 +34,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
     description: '',
     is_veg: true,
     is_featured: false,
-    status: 'ACTIVE'
-  });
+      });
   
   const [weights, setWeights] = useState<{ weight: string; price: string }[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -53,7 +54,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
     price1kg: weights.find(w => w.weight === '1kg')?.price ? Number(weights.find(w => w.weight === '1kg')?.price) : null,
     image: imagePreview || '/images/products/placeholder.jpg',
     isVeg: formData.is_veg,
-    isActive: formData.status === 'ACTIVE',
+    isActive: true,
     isPriceTBD: weights.length === 0,
     isBestSeller: formData.is_featured,
   };
@@ -71,8 +72,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
       description: '',
       is_veg: true,
       is_featured: false,
-      status: 'ACTIVE'
-    });
+          });
     setWeights([]);
     setImageFile(null);
     setImagePreview(null);
@@ -93,8 +93,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
       description: product.description,
       is_veg: product.isVeg,
       is_featured: product.isBestSeller || false,
-      status: product.isActive ? 'ACTIVE' : 'ARCHIVED'
-    });
+          });
     
     const initialWeights = [];
     if (product.price250g !== null) initialWeights.push({ weight: '250g', price: String(product.price250g) });
@@ -160,12 +159,9 @@ export default function ProductsClient({ initialProducts, categories }: Products
     try {
       const fd = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
-        if (key === 'status') {
-          fd.append('is_active', String(value === 'ACTIVE'));
-        } else {
-          fd.append(key, String(value));
-        }
+        fd.append(key, String(value));
       });
+      fd.append('is_active', 'true');
       fd.append('is_price_tbd', String(weights.length === 0));
       weights.forEach(w => {
         if (w.weight === '250g') fd.append('price250g', w.price);
@@ -199,25 +195,34 @@ export default function ProductsClient({ initialProducts, categories }: Products
     }
   };
 
-  const handleArchiveStatus = async (id: string, currentActive: boolean) => {
-    const action = currentActive ? 'Archive' : 'Restore';
-    if (!window.confirm(`Are you sure you want to ${action} this product?`)) return;
-    
-    const newStatus = !currentActive;
-    const res = await setProductStatusAction(id, newStatus);
-    if (res.success) {
-      showToast(`Product ${action}d successfully`, 'success');
-      setTimeout(() => window.location.reload(), 500);
-    } else {
-      showToast(`Failed to ${action} product`, 'error');
+  const requestDelete = (product: Product) => {
+    setProductToDelete(product);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!productToDelete) return;
+    setIsDeleting(true);
+    try {
+      const res = await deleteProductAction(productToDelete.id);
+      if (res.success) {
+        showToast('Product permanently deleted', 'success');
+        setDeleteModalOpen(false);
+        setTimeout(() => window.location.reload(), 500);
+      } else {
+        showToast(res.error || 'Failed to delete product', 'error');
+      }
+    } catch (err: any) {
+      showToast(err.message || 'An error occurred', 'error');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   const filteredProducts = products.filter(p => {
     const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || 
                           (p.nameTelugu && p.nameTelugu.includes(search));
-    const matchesStatus = showArchived ? !p.isActive : p.isActive;
-    return matchesSearch && matchesStatus;
+    return matchesSearch;
   });
 
   return (
@@ -263,22 +268,14 @@ export default function ProductsClient({ initialProducts, categories }: Products
           />
         </div>
         
-        <label className="flex items-center gap-2 text-sm font-semibold text-text-charcoal cursor-pointer">
-          <input 
-            type="checkbox" 
-            checked={showArchived}
-            onChange={(e) => setShowArchived(e.target.checked)}
-            className="rounded border-border-warm text-primary-red focus:ring-primary-red"
-          />
-          Show Archived Only
-        </label>
+        
       </div>
 
       {/* Products Table */}
       <div className="bg-white rounded-2xl border border-border-warm shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm">
-            <thead className="bg-bg-cream/40 border-b border-border-warm text-text-muted text-xs uppercase font-semibold text-left">
+          <table className="min-w-full text-sm block md:table">
+            <thead className="hidden md:table-header-group bg-bg-cream/40 border-b border-border-warm text-text-muted text-xs uppercase font-semibold text-left">
               <tr>
                 <th className="py-3 px-4">Product Details</th>
                 <th className="py-3 px-4">Category</th>
@@ -286,50 +283,53 @@ export default function ProductsClient({ initialProducts, categories }: Products
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-bg-cream-dark">
+            <tbody className="block md:table-row-group divide-y divide-bg-cream-dark">
               {filteredProducts.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="py-12 text-center text-text-muted">
+                <tr className="block md:table-row">
+                  <td colSpan={4} className="block md:table-cell py-12 text-center text-text-muted">
                     No products found.
                   </td>
                 </tr>
               ) : (
                 filteredProducts.map(p => (
-                  <tr key={p.id} className={`hover:bg-bg-cream/10 transition-colors ${!p.isActive ? 'opacity-60' : ''}`}>
-                    <td className="py-3 px-4 flex items-center gap-4">
-                      <div className="relative w-12 h-12 rounded overflow-hidden shrink-0 border border-border-warm bg-bg-cream-dark">
+                  <tr key={p.id} className="block md:table-row hover:bg-bg-cream/10 transition-colors p-4 md:p-0">
+                    <td className="block md:table-cell py-2 md:py-3 px-0 md:px-4 flex items-center gap-4">
+                      <div className="relative w-12 h-12 md:w-12 md:h-12 rounded overflow-hidden shrink-0 border border-border-warm bg-bg-cream-dark">
                         <Image src={p.image} alt={p.name} fill className="object-cover" />
                       </div>
                       <div>
-                        <p className="font-bold text-text-charcoal">{p.name}</p>
+                        <p className="font-bold text-text-charcoal text-base md:text-sm">{p.name}</p>
                         {p.nameTelugu && <p className="font-telugu text-xs text-text-muted mt-0.5">{p.nameTelugu}</p>}
                       </div>
                     </td>
-                    <td className="py-3 px-4 font-semibold text-text-charcoal uppercase text-xs">
+                    <td className="block md:table-cell py-1 md:py-3 px-0 md:px-4 font-semibold text-text-muted md:text-text-charcoal uppercase text-xs">
+                      <span className="md:hidden mr-2">Category:</span>
                       {categories.find(c => c.slug === p.category)?.name || p.category}
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="flex gap-2 text-xs">
+                    <td className="block md:table-cell py-2 md:py-3 px-0 md:px-4">
+                      <div className="flex flex-wrap gap-2 text-xs">
                         {p.price250g && <span className="bg-bg-cream px-2 py-1 rounded border border-border-warm">250g: {formatCurrency(p.price250g)}</span>}
                         {p.price500g && <span className="bg-bg-cream px-2 py-1 rounded border border-border-warm">500g: {formatCurrency(p.price500g)}</span>}
                         {p.price1kg && <span className="bg-bg-cream px-2 py-1 rounded border border-border-warm">1kg: {formatCurrency(p.price1kg)}</span>}
                       </div>
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center justify-end gap-2">
+                    <td className="block md:table-cell py-3 px-0 md:px-4 border-t border-border-warm md:border-t-0 mt-2 md:mt-0">
+                      <div className="flex items-center justify-start md:justify-end gap-2">
                         <button 
                           onClick={() => openEditModal(p)}
-                          className="p-2 text-accent-gold-dark hover:bg-accent-gold/10 rounded transition-colors"
+                          className="flex items-center gap-1.5 px-3 py-1.5 md:p-2 text-accent-gold-dark border border-accent-gold-dark/30 md:border-transparent hover:bg-accent-gold/10 rounded transition-colors"
                           title="Edit"
                         >
                           <Edit className="w-4 h-4" />
+                          <span className="md:hidden text-xs font-bold">Edit</span>
                         </button>
                         <button 
-                          onClick={() => handleArchiveStatus(p.id, p.isActive)}
-                          className={`p-2 rounded transition-colors ${p.isActive ? 'text-primary-red hover:bg-primary-red/10' : 'text-primary-green hover:bg-primary-green/10'}`}
-                          title={p.isActive ? "Archive" : "Restore"}
+                          onClick={() => requestDelete(p)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 md:p-2 border border-primary-red/30 md:border-transparent rounded transition-colors text-primary-red hover:bg-primary-red/10"
+                          title="Delete"
                         >
-                          {p.isActive ? <Archive className="w-4 h-4" /> : <RefreshCw className="w-4 h-4" />}
+                          <Trash2 className="w-4 h-4" />
+                          <span className="md:hidden text-xs font-bold">Delete</span>
                         </button>
                       </div>
                     </td>
@@ -426,7 +426,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
                     ))}
                     <button 
                       onClick={() => setWeights([...weights, { weight: '', price: '' }])}
-                      className="text-xs font-bold text-accent-gold-dark hover:text-accent-gold flex items-center gap-1"
+                      className="text-xs font-bold text-accent-gold-dark hover:text-accent-gold flex items-center justify-center gap-1 min-h-[44px] w-full sm:w-auto border border-accent-gold-dark/30 sm:border-transparent rounded-lg sm:rounded-none py-2 sm:py-0"
                     >
                       <Plus className="w-3 h-3" /> Add Weight Option
                     </button>
@@ -443,10 +443,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
                     <input type="checkbox" checked={formData.is_featured} onChange={e => setFormData({...formData, is_featured: e.target.checked})} className="rounded text-accent-gold" />
                     Featured
                   </label>
-                  <label className="flex items-center gap-2 text-sm font-semibold cursor-pointer">
-                    <input type="checkbox" checked={formData.status === 'ACTIVE'} onChange={e => setFormData({...formData, status: e.target.checked ? 'ACTIVE' : 'ARCHIVED'})} className="rounded text-primary-red" />
-                    Active
-                  </label>
+                  
                 </div>
 
                 {/* Image Upload */}
@@ -464,7 +461,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
                       )}
                     </div>
                     <div>
-                      <button onClick={() => fileInputRef.current?.click()} className="text-sm font-semibold px-3 py-1.5 border border-border-warm rounded bg-white hover:bg-bg-cream">
+                      <button onClick={() => fileInputRef.current?.click()} className="text-sm font-semibold px-4 py-2 border border-border-warm rounded bg-white hover:bg-bg-cream min-h-[44px]">
                         Choose Image
                       </button>
                       <p className="text-[10px] text-text-muted mt-1">JPEG/PNG, max 1MB (auto-compressed)</p>
@@ -474,14 +471,14 @@ export default function ProductsClient({ initialProducts, categories }: Products
                 </div>
 
                 {/* Submit */}
-                <div className="pt-4 border-t border-border-warm flex justify-end gap-3">
-                  <button onClick={closeModal} className="px-4 py-2 font-bold text-sm border border-border-warm rounded-lg hover:bg-bg-cream transition-colors">
+                <div className="pt-4 border-t border-border-warm flex flex-col sm:flex-row justify-end gap-3 mt-6">
+                  <button onClick={closeModal} className="w-full sm:w-auto px-4 py-3 font-bold text-sm border border-border-warm rounded-lg hover:bg-bg-cream transition-colors min-h-[44px]">
                     Cancel
                   </button>
                   <button 
                     onClick={handleSave} 
                     disabled={isSubmitting}
-                    className="flex items-center gap-2 px-6 py-2 bg-primary-red hover:bg-primary-red-dark text-white font-bold text-sm rounded-lg shadow disabled:opacity-50 transition-colors"
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-primary-red hover:bg-primary-red-dark text-white font-bold text-sm rounded-lg shadow disabled:opacity-50 transition-colors min-h-[44px]"
                   >
                     <Save className="w-4 h-4" />
                     {isSubmitting ? 'Saving...' : 'Save Product'}
@@ -498,6 +495,44 @@ export default function ProductsClient({ initialProducts, categories }: Products
               </div>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {deleteModalOpen && productToDelete && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-red/10 mb-4 mx-auto">
+              <AlertTriangle className="w-6 h-6 text-primary-red" />
+            </div>
+            
+            <h3 className="text-xl font-heading font-extrabold text-center text-text-charcoal mb-2">
+              Delete Product
+            </h3>
+            
+            <p className="text-center text-text-muted text-sm mb-6">
+              Are you sure you want to permanently delete <span className="font-bold text-text-charcoal">"{productToDelete.name}"</span>?
+              <br/><br/>
+              This action cannot be undone.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
+              <button 
+                onClick={() => setDeleteModalOpen(false)}
+                disabled={isDeleting}
+                className="w-full sm:w-auto flex-1 py-3 bg-bg-cream/50 hover:bg-bg-cream border border-border-warm text-text-charcoal font-bold text-sm rounded-lg transition-colors min-h-[44px]"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmDelete}
+                disabled={isDeleting}
+                className="w-full sm:w-auto flex-1 py-3 bg-primary-red hover:bg-primary-red-dark text-white font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 min-h-[44px]"
+              >
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
           </div>
         </div>
       )}

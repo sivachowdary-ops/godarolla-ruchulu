@@ -113,7 +113,7 @@ export function ProductCard({ product }: ProductCardProps) {
                       key={w}
                       type="button"
                       onClick={() => setSelectedWeight(w)}
-                      className={`flex-1 py-1 rounded-md text-xs font-bold transition-all cursor-pointer min-h-[30px] border ${
+                      className={`flex-1 py-1 rounded-md text-xs font-bold transition-all cursor-pointer min-h-[44px] md:min-h-[36px] border ${
                         isSelected
                           ? 'bg-primary-red border-primary-red text-white'
                           : 'bg-bg-cream border-border-warm text-text-charcoal hover:bg-bg-cream-dark'
@@ -126,7 +126,7 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
 
               {/* Price & Cart button */}
-              <div className="flex items-center justify-between gap-2 mt-1">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-2 mt-2">
                 <div className="flex flex-col">
                   <span className="text-[10px] text-text-muted uppercase font-bold tracking-wider">Price</span>
                   <span className="price-tag text-lg md:text-xl font-extrabold leading-none">
@@ -137,7 +137,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 <button
                   onClick={handleAddToCart}
                   disabled={price === null}
-                  className={`flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-bold transition-all duration-300 cursor-pointer min-h-[40px] ${
+                  className={`flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-lg text-sm md:text-xs font-bold transition-all duration-300 cursor-pointer min-h-[44px] ${
                     added
                       ? 'bg-primary-green text-white scale-95 shadow-inner'
                       : 'bg-primary-red hover:bg-primary-red-dark text-white shadow-sm hover:shadow-md'
@@ -145,13 +145,13 @@ export function ProductCard({ product }: ProductCardProps) {
                 >
                   {added ? (
                     <>
-                      <Check className="w-4 h-4" />
+                      <Check className="w-5 h-5 md:w-4 md:h-4" />
                       <span>Added!</span>
                     </>
                   ) : (
                     <>
-                      <ShoppingCart className="w-4 h-4" />
-                      <span>Add</span>
+                      <ShoppingCart className="w-5 h-5 md:w-4 md:h-4" />
+                      <span>Add to Cart</span>
                     </>
                   )}
                 </button>

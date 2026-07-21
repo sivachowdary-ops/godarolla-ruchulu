@@ -352,6 +352,38 @@ export function ProductDetailClient({ product, relatedProducts }: ProductDetailC
           </div>
         )}
       </div>
+
+      {/* Mobile Sticky Bottom Bar */}
+      {!product.isPriceTBD && price !== null && (
+        <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-border-warm p-4 z-40 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] pb-[calc(1rem+env(safe-area-inset-bottom))]">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-text-muted font-bold uppercase">{selectedWeight} Pack</span>
+              <span className="font-extrabold text-primary-red text-lg leading-none">{formatPrice(price)}</span>
+            </div>
+            <button
+              onClick={handleAddToCart}
+              className={`flex-grow flex items-center justify-center gap-2 py-3 rounded-lg font-bold text-sm shadow-md transition-all duration-300 min-h-[48px] ${
+                added
+                  ? 'bg-primary-green text-white scale-95 shadow-inner'
+                  : 'bg-primary-red hover:bg-primary-red-dark text-white hover:shadow-lg'
+              }`}
+            >
+              {added ? (
+                <>
+                  <Check className="w-5 h-5" />
+                  <span>Added!</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="w-5 h-5" />
+                  <span>Add to Cart</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
