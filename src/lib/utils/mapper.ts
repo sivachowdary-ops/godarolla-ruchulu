@@ -17,7 +17,7 @@ export function mapSupabaseToProduct(
   category: DBCategory | null,
   activeCategorySlugs: string[]
 ): Product {
-  const primaryImage = `/images/products/${product.slug}.webp`;
+  const primaryImage = product.image_url || `/images/products/${product.slug}.jpg`;
   // Validate category slug dynamically
   let safeCategorySlug = category?.slug || 'veg';
   if (!activeCategorySlugs.includes(safeCategorySlug)) {
