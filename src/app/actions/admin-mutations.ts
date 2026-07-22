@@ -6,6 +6,8 @@ import { checkAuth } from '@/lib/services/authService';
 import { logAction } from '@/lib/services/auditService';
 import { validateProductData, validateImage } from '@/lib/utils/validation';
 import { invalidateCache, CACHE_TAGS } from '@/lib/cache/cacheService';
+import fs from 'fs/promises';
+import path from 'path';
 
 function generateSlug(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -49,20 +51,19 @@ export async function createProductAction(formData: FormData) {
     const baseSlug = generateSlug(name);
     const uniqueSlug = await ensureUniqueSlug(supabase, baseSlug);
 
-    // 1. Upload Image First
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = `${uniqueSlug}-${Date.now()}.${fileExt}`;
+    // 1. Upload Image Locally
+    let imageUrl = '';
+    const fileName = `${uniqueSlug}.webp`;
+    const filePath = path.join(process.cwd(), 'public', 'images', 'products', fileName);
+    const buffer = Buffer.from(await imageFile.arrayBuffer());
     
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('product_images')
-      .upload(fileName, imageFile, { upsert: true });
-
-    if (uploadError) {
+    try {
+      await fs.writeFile(filePath, buffer);
+      imageUrl = `/images/products/${fileName}`;
+    } catch (uploadError) {
       console.error('Image upload failed', uploadError);
       return { success: false, error: 'Failed to upload image' };
     }
-
-    const imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product_images/${uploadData.path}`;
     await logAction(supabase, 'IMAGE_UPLOAD', { fileName, imageUrl });
 
     // 2. Insert Database Record
@@ -88,7 +89,7 @@ export async function createProductAction(formData: FormData) {
 
     if (dbError) {
       // COMPENSATING ROLLBACK: Delete the uploaded image if DB fails
-      await supabase.storage.from('product_images').remove([fileName]);
+      await fs.unlink(filePath).catch(() => {});
       console.error('Database insert failed, rolled back image', dbError);
       if (dbError.code === '23505') return { success: false, error: 'A product with this name/slug already exists' };
       return { success: false, error: 'Failed to create product in database' };
@@ -127,26 +128,20 @@ export async function updateProductAction(id: string, formData: FormData) {
 
     let newImageUrl = null;
     let newFileName = null;
-    let oldImagePath = null;
 
     if (imageFile && imageFile.size > 0) {
-      // Need to fetch old image to delete later
-      const { data: oldProduct } = await supabase.from('products').select('image_url').eq('id', id).single();
-      if (oldProduct && oldProduct.image_url) {
-        const pathMatch = oldProduct.image_url.match(/product_images\/(.+)$/);
-        if (pathMatch) oldImagePath = pathMatch[1];
-      }
+      newFileName = `${uniqueSlug}.webp`;
+      const filePath = path.join(process.cwd(), 'public', 'images', 'products', newFileName);
+      const buffer = Buffer.from(await imageFile.arrayBuffer());
 
-      const fileExt = imageFile.name.split('.').pop();
-      newFileName = `${uniqueSlug}-${Date.now()}.${fileExt}`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('product_images')
-        .upload(newFileName, imageFile, { upsert: true });
-
-      if (uploadError) {
-        return { success: false, error: 'Failed to upload new image' };
+      try {
+        await fs.writeFile(filePath, buffer);
+        newImageUrl = `/images/products/${newFileName}`;
+      } catch (uploadError) {
+        console.error('Image upload failed', uploadError);
+        return { success: false, error: 'Failed to upload image' };
       }
-      newImageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product_images/${uploadData.path}`;
+      
       await logAction(supabase, 'IMAGE_UPLOAD', { fileName: newFileName, imageUrl: newImageUrl });
     }
 
@@ -177,15 +172,14 @@ export async function updateProductAction(id: string, formData: FormData) {
 
     if (updateError) {
       if (newFileName) {
-         await supabase.storage.from('product_images').remove([newFileName]);
+        const filePath = path.join(process.cwd(), 'public', 'images', 'products', newFileName);
+        await fs.unlink(filePath).catch(() => {});
       }
       if (updateError.code === '23505') return { success: false, error: 'A product with this name/slug already exists' };
       return { success: false, error: 'Failed to update product details' };
     }
 
-    if (newImageUrl && oldImagePath) {
-      await supabase.storage.from('product_images').remove([oldImagePath]);
-    }
+    // No longer deleting old Supabase storage images since they are local and slug-based
 
     await logAction(supabase, 'UPDATE_PRODUCT', { productId: id, name });
     

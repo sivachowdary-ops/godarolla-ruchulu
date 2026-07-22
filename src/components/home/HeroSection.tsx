@@ -47,25 +47,15 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row flex-wrap gap-3 w-full mt-2">
             <Link
-<<<<<<< HEAD
-              href="/products?category=veg"
-              className="inline-flex justify-center items-center gap-2 px-5 py-3.5 bg-primary-green text-white font-semibold rounded-lg hover:bg-primary-green-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm w-full sm:w-auto"
-=======
               href="#categories"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-green text-white font-semibold rounded-lg hover:bg-primary-green-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm cursor-pointer"
->>>>>>> 907a04eef72912b9d154e70d4a58b1eb0f479a9f
+              className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-primary-green text-white font-semibold rounded-lg hover:bg-primary-green-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm w-full sm:w-auto cursor-pointer"
             >
               Explore Categories
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-<<<<<<< HEAD
-              href="/products?category=nonveg"
-              className="inline-flex justify-center items-center gap-2 px-5 py-3.5 bg-primary-red text-white font-semibold rounded-lg hover:bg-primary-red-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm w-full sm:w-auto"
-=======
               href="/products"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-red text-white font-semibold rounded-lg hover:bg-primary-red-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm cursor-pointer"
->>>>>>> 907a04eef72912b9d154e70d4a58b1eb0f479a9f
+              className="inline-flex justify-center items-center gap-2 px-6 py-3.5 bg-primary-red text-white font-semibold rounded-lg hover:bg-primary-red-dark transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm w-full sm:w-auto cursor-pointer"
             >
               Shop Now
               <ArrowRight className="w-4 h-4" />

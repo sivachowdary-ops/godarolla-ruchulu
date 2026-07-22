@@ -34,30 +34,32 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm card-hover border border-border-warm flex flex-col h-full p-3 md:p-4">
       {/* Product Image Link */}
-      <Link href={`/product/${product.slug}`} className="relative aspect-square w-full overflow-hidden rounded-lg bg-bg-cream-dark block group">
-        {imageError ? (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-bg-cream to-accent-gold/10 text-text-charcoal p-4 text-center">
-            <span className="text-4xl mb-2">🌶️</span>
-            <span className="text-xs font-semibold">{product.name}</span>
-          </div>
-        ) : (
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover img-zoom group-hover:scale-105"
-            onError={() => setImageError(true)}
-            priority={product.isBestSeller}
-          />
-        )}
+      <Link href={`/images/products/${product.slug}.webp`} className="block group">
+        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-bg-cream-dark">
+          {imageError ? (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-bg-cream to-accent-gold/10 text-text-charcoal p-4 text-center">
+              <span className="text-4xl mb-2">🌶️</span>
+              <span className="text-xs font-semibold">{product.name}</span>
+            </div>
+          ) : (
+            <Image
+              src={`/images/products/${product.slug}.webp`}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover img-zoom group-hover:scale-105"
+              onError={() => setImageError(true)}
+              priority={product.isBestSeller}
+            />
+          )}
 
-        {/* Best seller ribbon */}
-        {product.isBestSeller && (
-          <div className="absolute top-2 left-2 bg-accent-gold text-text-charcoal text-[10px] font-bold px-2 py-1 rounded shadow-sm uppercase tracking-wider">
-            Best Seller ⭐
-          </div>
-        )}
+          {/* Best seller ribbon */}
+          {product.isBestSeller && (
+            <div className="absolute top-2 left-2 bg-accent-gold text-text-charcoal text-[10px] font-bold px-2 py-1 rounded shadow-sm uppercase tracking-wider">
+              Best Seller ⭐
+            </div>
+          )}
+        </div>
       </Link>
 
       {/* Product Info */}
@@ -113,11 +115,10 @@ export function ProductCard({ product }: ProductCardProps) {
                       key={w}
                       type="button"
                       onClick={() => setSelectedWeight(w)}
-                      className={`flex-1 py-1 rounded-md text-xs font-bold transition-all cursor-pointer min-h-[44px] md:min-h-[36px] border ${
-                        isSelected
-                          ? 'bg-primary-red border-primary-red text-white'
-                          : 'bg-bg-cream border-border-warm text-text-charcoal hover:bg-bg-cream-dark'
-                      }`}
+                      className={`flex-1 py-1 rounded-md text-xs font-bold transition-all cursor-pointer min-h-[44px] md:min-h-[36px] border ${isSelected
+                        ? 'bg-primary-red border-primary-red text-white'
+                        : 'bg-bg-cream border-border-warm text-text-charcoal hover:bg-bg-cream-dark'
+                        }`}
                     >
                       {w}
                     </button>
@@ -137,11 +138,10 @@ export function ProductCard({ product }: ProductCardProps) {
                 <button
                   onClick={handleAddToCart}
                   disabled={price === null}
-                  className={`flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-lg text-sm md:text-xs font-bold transition-all duration-300 cursor-pointer min-h-[44px] ${
-                    added
-                      ? 'bg-primary-green text-white scale-95 shadow-inner'
-                      : 'bg-primary-red hover:bg-primary-red-dark text-white shadow-sm hover:shadow-md'
-                  }`}
+                  className={`flex items-center justify-center gap-1.5 w-full sm:w-auto px-4 py-2.5 rounded-lg text-sm md:text-xs font-bold transition-all duration-300 cursor-pointer min-h-[44px] ${added
+                    ? 'bg-primary-green text-white scale-95 shadow-inner'
+                    : 'bg-primary-red hover:bg-primary-red-dark text-white shadow-sm hover:shadow-md'
+                    }`}
                 >
                   {added ? (
                     <>

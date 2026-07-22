@@ -21,7 +21,7 @@ export const products: Product[] = [
     price250g: 100,
     price500g: 200,
     price1kg: 400,
-    image: '/images/products/avakaya.jpg', // AI-PLACEHOLDER — Replace with real product photo
+    image: '/images/products/avakaya.webp', // AI-PLACEHOLDER — Replace with real product photo
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -38,7 +38,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/bellam-avakaya.jpg', // AI-PLACEHOLDER
+    image: '/images/products/bellam-avakaya.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -54,7 +54,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/magai.jpg', // AI-PLACEHOLDER
+    image: '/images/products/magai.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -70,7 +70,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/allam-ginger.jpg', // AI-PLACEHOLDER
+    image: '/images/products/allam-ginger.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -86,7 +86,7 @@ export const products: Product[] = [
     price250g: 150,
     price500g: 300,
     price1kg: 600,
-    image: '/images/products/villulli-garlic.jpg', // AI-PLACEHOLDER
+    image: '/images/products/villulli-garlic.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -102,7 +102,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/chinthakaya.jpg', // AI-PLACEHOLDER
+    image: '/images/products/chinthakaya.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -118,7 +118,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/tomato.jpg', // AI-PLACEHOLDER
+    image: '/images/products/tomato.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -134,7 +134,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/dabbakaya.jpg', // AI-PLACEHOLDER
+    image: '/images/products/dabbakaya.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -150,7 +150,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/gongura.jpg', // AI-PLACEHOLDER
+    image: '/images/products/gongura.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -167,7 +167,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/kothimeera.jpg', // AI-PLACEHOLDER
+    image: '/images/products/kothimeera.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -183,7 +183,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/pudina.jpg', // AI-PLACEHOLDER
+    image: '/images/products/pudina.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -199,7 +199,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/karivepaku.jpg', // AI-PLACEHOLDER
+    image: '/images/products/karivepaku.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -215,7 +215,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/kakarakaya.jpg', // AI-PLACEHOLDER
+    image: '/images/products/kakarakaya.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -231,7 +231,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/nimmakaya-lemon.jpg', // AI-PLACEHOLDER
+    image: '/images/products/nimmakaya-lemon.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -247,7 +247,7 @@ export const products: Product[] = [
     price250g: 100,
     price500g: 200,
     price1kg: 400,
-    image: '/images/products/chitrannam-paste.jpg', // AI-PLACEHOLDER
+    image: '/images/products/chitrannam-paste.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -263,7 +263,7 @@ export const products: Product[] = [
     price250g: 100,
     price500g: 200,
     price1kg: 400,
-    image: '/images/products/pulihora-paste.jpg', // AI-PLACEHOLDER
+    image: '/images/products/pulihora-paste.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -279,7 +279,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/pandu-mirchi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/pandu-mirchi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -295,7 +295,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/pachi-mirchi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/pachi-mirchi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -311,7 +311,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/usirikaya-amla.jpg', // AI-PLACEHOLDER
+    image: '/images/products/usirikaya-amla.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -333,7 +333,7 @@ export const products: Product[] = [
     price250g: 120,  // [UNCONFIRMED — verify with client, handwritten on board]
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/avakaya-biryani-masala.jpg', // AI-PLACEHOLDER
+    image: '/images/products/avakaya-biryani-masala.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: true, // Pricing needs confirmation
@@ -349,7 +349,7 @@ export const products: Product[] = [
     price250g: 120,  // [UNCONFIRMED — verify with client]
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/avakaya-telangana-style.jpg', // AI-PLACEHOLDER
+    image: '/images/products/avakaya-telangana-style.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: true,
@@ -365,7 +365,7 @@ export const products: Product[] = [
     price250g: 120,  // [UNCONFIRMED — verify with client]
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/cabbage-pickle.jpg', // AI-PLACEHOLDER
+    image: '/images/products/cabbage-pickle.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: true,
@@ -385,7 +385,7 @@ export const products: Product[] = [
     price250g: 225,
     price500g: 450,
     price1kg: 900,
-    image: '/images/products/chicken-pickle-bone.jpg', // AI-PLACEHOLDER
+    image: '/images/products/chicken-pickle-bone.webp', // AI-PLACEHOLDER
     isVeg: false,
     isActive: true,
     isPriceTBD: false,
@@ -401,7 +401,7 @@ export const products: Product[] = [
     price250g: 300,
     price500g: 600,
     price1kg: 1200,
-    image: '/images/products/chicken-pickle-boneless.jpg', // AI-PLACEHOLDER
+    image: '/images/products/chicken-pickle-boneless.webp', // AI-PLACEHOLDER
     isVeg: false,
     isActive: true,
     isPriceTBD: false,
@@ -418,7 +418,7 @@ export const products: Product[] = [
     price250g: 350,
     price500g: 700,
     price1kg: 1400,
-    image: '/images/products/prawn-pickle.jpg', // AI-PLACEHOLDER
+    image: '/images/products/prawn-pickle.webp', // AI-PLACEHOLDER
     isVeg: false,
     isActive: true,
     isPriceTBD: false,
@@ -435,7 +435,7 @@ export const products: Product[] = [
     price250g: 350,
     price500g: 700,
     price1kg: 1400,
-    image: '/images/products/mutton-pickle.jpg', // AI-PLACEHOLDER
+    image: '/images/products/mutton-pickle.webp', // AI-PLACEHOLDER
     isVeg: false,
     isActive: true,
     isPriceTBD: false,
@@ -451,7 +451,7 @@ export const products: Product[] = [
     price250g: 300,
     price500g: 600,
     price1kg: 1200,
-    image: '/images/products/vanjaram-pickle.jpg', // AI-PLACEHOLDER
+    image: '/images/products/vanjaram-pickle.webp', // AI-PLACEHOLDER
     isVeg: false,
     isActive: true,
     isPriceTBD: false,
@@ -467,7 +467,7 @@ export const products: Product[] = [
     price250g: null,  // [PRICE TBD — confirm with client]
     price500g: null,
     price1kg: null,
-    image: '/images/products/dry-prawns.jpg', // AI-PLACEHOLDER
+    image: '/images/products/dry-prawns.webp', // AI-PLACEHOLDER
     isVeg: false,
     isActive: false, // Hidden until price confirmed
     isPriceTBD: true,
@@ -483,7 +483,7 @@ export const products: Product[] = [
     price250g: null,  // [PRICE TBD — confirm with client]
     price500g: null,
     price1kg: null,
-    image: '/images/products/dry-methallu.jpg', // AI-PLACEHOLDER
+    image: '/images/products/dry-methallu.webp', // AI-PLACEHOLDER
     isVeg: false,
     isActive: false, // Hidden until price confirmed
     isPriceTBD: true,
@@ -501,7 +501,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/dhaniyalu-karam-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/dhaniyalu-karam-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -516,7 +516,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/palli-karam-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/palli-karam-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -530,7 +530,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/kandi-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/kandi-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -545,7 +545,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/kakarakaya-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/kakarakaya-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -559,7 +559,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/usirikaya-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/usirikaya-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -573,7 +573,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/karivepaku-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/karivepaku-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -587,7 +587,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/nalla-karam-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/nalla-karam-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -601,7 +601,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/munagaku-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/munagaku-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -615,7 +615,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/kothimera-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/kothimera-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -629,7 +629,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/avisa-ginjalu-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/avisa-ginjalu-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -643,7 +643,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/sonti-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/sonti-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -657,7 +657,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/pudina-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/pudina-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -671,7 +671,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/sanagapappu-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/sanagapappu-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -685,7 +685,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/idly-karam-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/idly-karam-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -699,7 +699,7 @@ export const products: Product[] = [
     price250g: 100,
     price500g: 200,
     price1kg: 400,
-    image: '/images/products/kobbari-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/kobbari-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -713,7 +713,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/ulli-karam-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/ulli-karam-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -727,7 +727,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/ulavacharu.jpg', // AI-PLACEHOLDER
+    image: '/images/products/ulavacharu.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -741,7 +741,7 @@ export const products: Product[] = [
     price250g: 110,
     price500g: 220,
     price1kg: 440,
-    image: '/images/products/nuvvulu-karam-podi.jpg', // AI-PLACEHOLDER
+    image: '/images/products/nuvvulu-karam-podi.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -755,7 +755,7 @@ export const products: Product[] = [
     price250g: 80,
     price500g: 160,
     price1kg: 320,
-    image: '/images/products/junnu-powder.jpg', // AI-PLACEHOLDER
+    image: '/images/products/junnu-powder.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -772,7 +772,7 @@ export const products: Product[] = [
     price250g: 160,
     price500g: 320,
     price1kg: 640,
-    image: '/images/products/pumpkin-seeds.jpg', // AI-PLACEHOLDER
+    image: '/images/products/pumpkin-seeds.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -787,7 +787,7 @@ export const products: Product[] = [
     price250g: 125,
     price500g: 250,
     price1kg: 500,
-    image: '/images/products/sunflower-seeds.jpg', // AI-PLACEHOLDER
+    image: '/images/products/sunflower-seeds.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -801,7 +801,7 @@ export const products: Product[] = [
     price250g: 150,
     price500g: 300,
     price1kg: 600,
-    image: '/images/products/sabja-seeds.jpg', // AI-PLACEHOLDER
+    image: '/images/products/sabja-seeds.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -815,7 +815,7 @@ export const products: Product[] = [
     price250g: 150,
     price500g: 300,
     price1kg: 600,
-    image: '/images/products/chia-seeds.jpg', // AI-PLACEHOLDER
+    image: '/images/products/chia-seeds.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -829,7 +829,7 @@ export const products: Product[] = [
     price250g: 125,
     price500g: 250,
     price1kg: 500,
-    image: '/images/products/flax-seeds.jpg', // AI-PLACEHOLDER
+    image: '/images/products/flax-seeds.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -847,7 +847,7 @@ export const products: Product[] = [
     price250g: 90,
     price500g: 180,
     price1kg: 360,
-    image: '/images/products/bellam-mamidi-thandra.jpg', // AI-PLACEHOLDER
+    image: '/images/products/bellam-mamidi-thandra.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -862,7 +862,7 @@ export const products: Product[] = [
     price250g: 90,
     price500g: 180,
     price1kg: 360,
-    image: '/images/products/sugar-mamidi-thandra.jpg', // AI-PLACEHOLDER
+    image: '/images/products/sugar-mamidi-thandra.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -877,7 +877,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/guava-jelly.jpg', // AI-PLACEHOLDER
+    image: '/images/products/guava-jelly.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -891,7 +891,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/strawberry-jelly.jpg', // AI-PLACEHOLDER
+    image: '/images/products/strawberry-jelly.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -905,7 +905,7 @@ export const products: Product[] = [
     price250g: 120,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/green-mango-jelly.jpg', // AI-PLACEHOLDER
+    image: '/images/products/green-mango-jelly.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -919,7 +919,7 @@ export const products: Product[] = [
     price250g: null,
     price500g: 240,
     price1kg: 480,
-    image: '/images/products/mixed-jelly-box.jpg', // AI-PLACEHOLDER
+    image: '/images/products/mixed-jelly-box.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,
@@ -933,7 +933,7 @@ export const products: Product[] = [
     price250g: 130,
     price500g: 260,
     price1kg: 520,
-    image: '/images/products/thati-thandra.jpg', // AI-PLACEHOLDER
+    image: '/images/products/thati-thandra.webp', // AI-PLACEHOLDER
     isVeg: true,
     isActive: true,
     isPriceTBD: false,

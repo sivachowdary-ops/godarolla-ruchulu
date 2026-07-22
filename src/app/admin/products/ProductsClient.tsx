@@ -52,7 +52,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
     price250g: weights.find(w => w.weight === '250g')?.price ? Number(weights.find(w => w.weight === '250g')?.price) : null,
     price500g: weights.find(w => w.weight === '500g')?.price ? Number(weights.find(w => w.weight === '500g')?.price) : null,
     price1kg: weights.find(w => w.weight === '1kg')?.price ? Number(weights.find(w => w.weight === '1kg')?.price) : null,
-    image: imagePreview || '/images/products/placeholder.jpg',
+    image: imagePreview || '/images/products/placeholder.webp',
     isVeg: formData.is_veg,
     isActive: true,
     isPriceTBD: weights.length === 0,
@@ -126,7 +126,8 @@ export default function ProductsClient({ initialProducts, categories }: Products
       const options = {
         maxSizeMB: 1,
         maxWidthOrHeight: 1024,
-        useWebWorker: true
+        useWebWorker: true,
+        fileType: 'image/webp'
       };
       const compressedFile = await imageCompression(file, options);
       setImageFile(compressedFile);
