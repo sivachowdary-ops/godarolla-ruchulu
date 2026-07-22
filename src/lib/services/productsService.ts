@@ -71,7 +71,7 @@ export const getProducts = withDataCache(
   fetchProducts,
   ['all_products'],
   [CACHE_TAGS.PRODUCTS],
-  false
+  60
 );
 
 /**
@@ -119,7 +119,7 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
     () => fetchProductBySlug(slug),
     ['product', slug],
     [CACHE_TAGS.PRODUCTS, `product-${slug}`],
-    false
+    60
   );
   return cachedFetcher();
 }
