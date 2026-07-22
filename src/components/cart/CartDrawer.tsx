@@ -4,6 +4,7 @@ import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/lib/utils';
 import { siteConfig } from '@/config/site';
 import { X, Trash2, ShoppingCart, Plus, Minus, ShieldAlert } from 'lucide-react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 
 export function CartDrawer() {
@@ -17,6 +18,17 @@ export function CartDrawer() {
     getItemCount,
     setIsCheckoutOpen,
   } = useCart();
+
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isCartOpen]);
 
   if (!isCartOpen) return null;
 
@@ -37,12 +49,12 @@ export function CartDrawer() {
     <>
       {/* Drawer Overlay */}
       <div
-        className="drawer-overlay"
+        className="fixed inset-0 z-[120] bg-black/60 backdrop-blur-sm transition-opacity duration-300"
         onClick={() => setIsCartOpen(false)}
       />
 
       {/* Slide-in Drawer Container */}
-      <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col slide-in-right border-l border-border-warm">
+      <div className="fixed top-0 right-0 h-full h-[100dvh] w-full max-w-md bg-white shadow-2xl z-[125] flex flex-col slide-in-right border-l border-border-warm">
         {/* Drawer Header */}
         <div className="p-4 md:p-6 border-b border-border-warm flex items-center justify-between">
           <div className="flex items-center gap-2">

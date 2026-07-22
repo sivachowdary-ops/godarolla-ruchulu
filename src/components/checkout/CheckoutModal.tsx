@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import { CheckoutFormData } from '@/types';
 import {
@@ -135,8 +135,19 @@ export function CheckoutModal() {
     handleClose();
   };
 
+  useEffect(() => {
+    if (isCheckoutOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isCheckoutOpen]);
+
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-text-charcoal/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[130] overflow-y-auto bg-text-charcoal/60 backdrop-blur-sm flex items-center justify-center p-4">
       {/* Modal Card */}
       <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-border-warm overflow-hidden max-h-[90vh] flex flex-col scale-100 transition-all duration-300">
         

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
@@ -11,11 +12,16 @@ export function Navbar() {
   const { getItemCount, setIsCartOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileCategoriesOpen, setIsMobileCategoriesOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const cartCount = getItemCount();
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsMobileMenuOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -43,11 +49,11 @@ export function Navbar() {
   ];
 
   return (
-    <header className="w-full bg-white/90 backdrop-blur-md border-b border-border-warm shadow-sm">
-      <div className="container mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+    <header className="w-full bg-white/95 backdrop-blur-md border-b border-border-warm shadow-sm">
+      <div className="container mx-auto px-3 sm:px-4 md:px-8 h-16 md:h-20 flex items-center justify-between">
         {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-3 group" onClick={closeMobileMenu}>
-          <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-accent-gold shadow-sm group-hover:border-primary-red transition-colors">
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0" onClick={closeMobileMenu}>
+          <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-accent-gold shadow-sm group-hover:border-primary-red transition-colors shrink-0">
             <Image
               src="/images/logo.jpeg"
               alt={siteConfig.name}
@@ -57,11 +63,11 @@ export function Navbar() {
             />
           </div>
           <div className="flex flex-col">
-            <h1 className="font-heading font-extrabold text-lg md:text-xl text-primary-red leading-tight flex items-center gap-1.5">
+            <h1 className="font-heading font-extrabold text-base md:text-xl text-primary-red leading-tight flex items-center gap-1.5 whitespace-nowrap">
               <span>{siteConfig.name}</span>
               <span className="font-telugu text-sm text-primary-green hidden md:inline">({siteConfig.nameTelugu})</span>
             </h1>
-            <span className="text-xs text-accent-gold-dark font-bold tracking-widest">{siteConfig.tagline}</span>
+            <span className="text-[10px] md:text-xs text-accent-gold-dark font-bold tracking-widest uppercase">{siteConfig.tagline}</span>
           </div>
         </Link>
 
@@ -139,94 +145,106 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Sidebar Overlay */}
-      {isMobileMenuOpen && (
-        <div 
-          className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] transition-opacity duration-300"
-          onClick={closeMobileMenu}
-        />
-      )}
-
-      {/* Mobile Drawer (Slide in from right) */}
-      <div 
-        className={`md:hidden fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white shadow-2xl z-[70] transform transition-transform duration-300 ease-in-out flex flex-col ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
-      >
-        <div className="flex items-center justify-between p-4 border-b border-border-warm">
-          <span className="font-heading font-extrabold text-lg text-primary-red">Menu</span>
-          <button 
+      {/* Render Mobile Navigation Drawer via React Portal directly into body */}
+      {mounted && createPortal(
+        <>
+          {/* Backdrop */}
+          <div
+            className={`fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+              isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
             onClick={closeMobileMenu}
-            className="p-3 rounded-full hover:bg-bg-cream-dark transition-colors cursor-pointer"
-            aria-label="Close Menu"
-          >
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-        
-        <nav className="flex-grow flex flex-col py-4 px-6 gap-2 overflow-y-auto">
-          <Link
-            href="/"
-            className="text-text-charcoal font-semibold py-3 hover:text-primary-red transition-colors border-b border-bg-cream-dark text-lg"
-            onClick={closeMobileMenu}
-          >
-            Home
-          </Link>
+          />
 
-          {/* Mobile Expandable Categories */}
-          <div className="border-b border-bg-cream-dark py-2">
-            <button
-              onClick={() => setIsMobileCategoriesOpen(!isMobileCategoriesOpen)}
-              className="flex items-center justify-between w-full text-text-charcoal font-semibold py-2 hover:text-primary-red transition-colors focus:outline-none text-lg cursor-pointer"
-            >
-              <span>Categories</span>
-              <ChevronDown className={`w-5 h-5 transition-transform duration-200 ${isMobileCategoriesOpen ? 'rotate-180' : ''}`} />
-            </button>
-            
-            {isMobileCategoriesOpen && (
-              <div className="flex flex-col pl-4 gap-3 py-3 animate-fade-in">
-                {categoryItems.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-text-muted hover:text-primary-red text-base transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+          {/* Drawer Panel */}
+          <div
+            className={`fixed top-0 right-0 z-[110] h-full h-[100dvh] w-full max-w-xs sm:w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${
+              isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-border-warm bg-white">
+              <span className="font-heading font-extrabold text-lg text-primary-red">Menu</span>
+              <button
+                onClick={closeMobileMenu}
+                className="p-2.5 rounded-full hover:bg-bg-cream-dark transition-colors cursor-pointer text-text-charcoal hover:text-primary-red"
+                aria-label="Close Menu"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <nav className="flex-grow flex flex-col py-4 px-6 gap-2 overflow-y-auto bg-white">
+              <Link
+                href="/"
+                className="text-text-charcoal font-semibold py-3 hover:text-primary-red transition-colors border-b border-bg-cream-dark text-base"
+                onClick={closeMobileMenu}
+              >
+                Home
+              </Link>
+
+              {/* Mobile Expandable Categories */}
+              <div className="border-b border-bg-cream-dark py-2">
+                <button
+                  onClick={() => setIsMobileCategoriesOpen(!isMobileCategoriesOpen)}
+                  className="flex items-center justify-between w-full text-text-charcoal font-semibold py-2 hover:text-primary-red transition-colors focus:outline-none text-base cursor-pointer"
+                >
+                  <span>Categories</span>
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform duration-200 ${
+                      isMobileCategoriesOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+
+                {isMobileCategoriesOpen && (
+                  <div className="flex flex-col pl-4 gap-3 py-3 animate-fade-in">
+                    {categoryItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="text-text-muted hover:text-primary-red text-sm transition-colors"
+                        onClick={closeMobileMenu}
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
+
+              <Link
+                href="/contact"
+                className="text-text-charcoal font-semibold py-3 hover:text-primary-red transition-colors border-b border-bg-cream-dark text-base"
+                onClick={closeMobileMenu}
+              >
+                Contact
+              </Link>
+
+              <Link
+                href="/#faq"
+                className="text-text-charcoal font-semibold py-3 hover:text-primary-red transition-colors border-b border-bg-cream-dark last:border-0 text-base"
+                onClick={closeMobileMenu}
+              >
+                FAQs
+              </Link>
+            </nav>
+
+            <div className="p-6 border-t border-border-warm bg-bg-cream/30">
+              <button
+                onClick={() => {
+                  closeMobileMenu();
+                  setIsCartOpen(true);
+                }}
+                className="flex items-center justify-center gap-2 w-full py-3.5 bg-primary-green hover:bg-primary-green-dark text-white rounded-xl font-bold transition-colors cursor-pointer min-h-[50px] shadow-sm"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                View Cart ({cartCount})
+              </button>
+            </div>
           </div>
-
-          <Link
-            href="/contact"
-            className="text-text-charcoal font-semibold py-3 hover:text-primary-red transition-colors border-b border-bg-cream-dark text-lg"
-            onClick={closeMobileMenu}
-          >
-            Contact
-          </Link>
-
-          <Link
-            href="/#faq"
-            className="text-text-charcoal font-semibold py-3 hover:text-primary-red transition-colors border-b border-bg-cream-dark last:border-0 text-lg"
-            onClick={closeMobileMenu}
-          >
-            FAQs
-          </Link>
-        </nav>
-        
-        <div className="p-6 border-t border-border-warm bg-bg-cream/30">
-          <button
-            onClick={() => {
-              closeMobileMenu();
-              setIsCartOpen(true);
-            }}
-            className="flex items-center justify-center gap-2 w-full py-4 bg-primary-green hover:bg-primary-green-dark text-white rounded-xl font-bold transition-colors cursor-pointer min-h-[56px]"
-          >
-            <ShoppingCart className="w-5 h-5" />
-            View Cart ({cartCount})
-          </button>
-        </div>
-      </div>
+        </>,
+        document.body
+      )}
     </header>
   );
 }
