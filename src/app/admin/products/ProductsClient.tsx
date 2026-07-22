@@ -42,6 +42,14 @@ export default function ProductsClient({ initialProducts, categories }: Products
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Derive preview product for live preview
+  const raw250gStr = weights.find(w => w.weight === '250g')?.price;
+  const raw500gStr = weights.find(w => w.weight === '500g')?.price;
+  const raw1kgStr = weights.find(w => w.weight === '1kg')?.price;
+
+  const basePrice250g = raw250gStr ? Number(raw250gStr) : null;
+  const price500g = (raw500gStr && raw500gStr.trim() !== '') ? Number(raw500gStr) : (basePrice250g ? basePrice250g * 2 : null);
+  const price1kg = (raw1kgStr && raw1kgStr.trim() !== '') ? Number(raw1kgStr) : (basePrice250g ? basePrice250g * 4 : null);
+
   const previewProduct: Product = {
     id: editingId || 'preview-id',
     slug: 'preview-slug',
@@ -49,9 +57,9 @@ export default function ProductsClient({ initialProducts, categories }: Products
     nameTelugu: formData.name_telugu || undefined,
     category: categories.find(c => c.id === formData.category_id)?.slug as any || 'veg',
     description: formData.description || 'Description...',
-    price250g: weights.find(w => w.weight === '250g')?.price ? Number(weights.find(w => w.weight === '250g')?.price) : null,
-    price500g: weights.find(w => w.weight === '500g')?.price ? Number(weights.find(w => w.weight === '500g')?.price) : null,
-    price1kg: weights.find(w => w.weight === '1kg')?.price ? Number(weights.find(w => w.weight === '1kg')?.price) : null,
+    price250g: basePrice250g,
+    price500g: price500g,
+    price1kg: price1kg,
     image: imagePreview || '/images/products/placeholder.webp',
     isVeg: formData.is_veg,
     isActive: true,
@@ -139,21 +147,36 @@ export default function ProductsClient({ initialProducts, categories }: Products
   };
 
   const handleSave = async () => {
-    if (!formData.name || !formData.category_id || !formData.description) {
-      showToast('Please fill all required fields', 'error');
-      return;
-    }
+    if (!formData.name) { showToast('Please enter a product name.', 'error'); return; }
+    if (!formData.category_id) { showToast('Please select a category.', 'error'); return; }
+    if (!formData.description) { showToast('Please enter a product description.', 'error'); return; }
     if (!editingId && !imageFile) {
-      showToast('Please select an image for new products', 'error');
+      showToast('Please upload a product image.', 'error');
       return;
     }
     
-    // Check positive prices
+    // Check prices
+    let has250g = false;
     for (const w of weights) {
-      if (Number(w.price) <= 0) {
-        showToast('Prices must be positive numbers', 'error');
-        return;
+      if (w.weight === '250g') {
+        has250g = true;
+        if (!w.price || w.price.trim() === '') {
+          showToast('Please enter a 250g price.', 'error');
+          return;
+        }
       }
+      
+      if (w.price && w.price.trim() !== '') {
+        if (Number(w.price) < 0) {
+          showToast(`Price for ${w.weight} must be a valid positive number.`, 'error');
+          return;
+        }
+      }
+    }
+    
+    if (weights.length > 0 && !has250g) {
+      showToast('Please enter a 250g price.', 'error');
+      return;
     }
 
     setIsSubmitting(true);
@@ -229,7 +252,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
   return (
     <div className="space-y-8 font-body">
       {toast && (
-        <div className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 text-white font-bold flex items-center gap-2 ${toast.type === 'success' ? 'bg-primary-green' : 'bg-primary-red'}`}>
+        <div className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg z-[9999] text-white font-bold flex items-center gap-2 ${toast.type === 'success' ? 'bg-primary-green' : 'bg-primary-red'}`}>
           {toast.type === 'success' ? <Check className="w-5 h-5" /> : <X className="w-5 h-5" />}
           {toast.message}
         </div>

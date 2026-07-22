@@ -19,8 +19,6 @@ export async function login(formData: FormData) {
   }
 
   // After a successful login, we also should check if this user is actually an admin
-  // Wait, checkAuth() is for protected routes. But we might want to check here as well to fail early.
-  // We can do it here, or let the dashboard fail. Let's do it here for better UX.
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
     // Check if user is in admins table
@@ -32,9 +30,14 @@ export async function login(formData: FormData) {
       .eq('user_id', user.id)
       .single();
 
+    console.log("Reached login action");
+    console.log("User", user);
+    console.log("Admin query", adminData);
+    console.log("Admin error", adminError);
+
     if (adminError || !adminData) {
       // Determine if this is the first administrator
-      const { count } = await adminDb
+      const { count, error: countError } = await adminDb
         .from('admins')
         .select('*', { count: 'exact', head: true });
 
@@ -47,8 +50,6 @@ export async function login(formData: FormData) {
             email: user.email,
             role: 'super_admin',
           });
-
-        console.log(insertError);
       } else {
         // Not an admin, sign out and reject
         await supabase.auth.signOut();

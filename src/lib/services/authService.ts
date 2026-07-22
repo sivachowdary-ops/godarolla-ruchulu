@@ -21,6 +21,11 @@ export async function checkAuth(): Promise<void> {
     .eq('user_id', user.id)
     .single();
 
+  console.log("Reached checkAuth");
+  console.log("User", user);
+  console.log("Admin query", adminData);
+  console.log("Admin error", adminError);
+
   if (adminError || !adminData) {
     throw new Error('Unauthorized: Insufficient privileges');
   }

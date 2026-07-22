@@ -36,16 +36,14 @@ export async function createProductAction(formData: FormData) {
   const supabase = getAdminSupabase();
 
   try {
-    const { name, price250g, price500g, price1kg, isPriceTBD } = validateProductData(formData);
+    const { name, category_id, description, price250g, price500g, price1kg, isPriceTBD } = validateProductData(formData);
     const name_telugu = formData.get('name_telugu') as string || null;
-    const category_id = formData.get('category_id') as string;
-    const description = formData.get('description') as string;
     const is_veg = formData.get('is_veg') === 'true';
     const is_best_seller = formData.get('is_best_seller') === 'true';
     const is_active = formData.get('is_active') === 'true';
     const imageFile = formData.get('image') as File | null;
 
-    if (!imageFile || imageFile.size === 0) throw new Error('Image is required');
+    if (!imageFile || imageFile.size === 0) throw new Error('Please upload a product image.');
     validateImage(imageFile);
 
     const baseSlug = generateSlug(name);
@@ -112,10 +110,8 @@ export async function updateProductAction(id: string, formData: FormData) {
   const supabase = getAdminSupabase();
 
   try {
-    const { name, price250g, price500g, price1kg, isPriceTBD } = validateProductData(formData);
+    const { name, category_id, description, price250g, price500g, price1kg, isPriceTBD } = validateProductData(formData);
     const name_telugu = formData.get('name_telugu') as string || null;
-    const category_id = formData.get('category_id') as string;
-    const description = formData.get('description') as string;
     const is_veg = formData.get('is_veg') === 'true';
     const is_best_seller = formData.get('is_best_seller') === 'true';
     const is_active = formData.get('is_active') === 'true';
@@ -244,13 +240,25 @@ export async function getDashboardStats() {
   await checkAuth();
   const supabase = getAdminSupabase();
 
-  const { count: activeCount } = await supabase.from('products').select('*', { count: 'exact', head: true });
-  const { count: categoriesCount } = await supabase.from('categories').select('*', { count: 'exact', head: true });
-  const { count: totalProducts } = await supabase.from('products').select('*', { count: 'exact', head: true });
+  const [activeProductsResult, categoriesResult, totalProductsResult] = await Promise.all([
+    supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
+    supabase.from('categories').select('*', { count: 'exact', head: true }),
+    supabase.from('products').select('*', { count: 'exact', head: true }),
+  ]);
+
+  if (activeProductsResult.error) {
+    console.error('Error fetching active products count:', activeProductsResult.error);
+  }
+  if (categoriesResult.error) {
+    console.error('Error fetching categories count:', categoriesResult.error);
+  }
+  if (totalProductsResult.error) {
+    console.error('Error fetching total products count:', totalProductsResult.error);
+  }
 
   return {
-    activeProducts: activeCount || 0,
-    totalCategories: categoriesCount || 0,
-    totalProducts: totalProducts || 0,
+    activeProducts: activeProductsResult.count || 0,
+    totalCategories: categoriesResult.count || 0,
+    totalProducts: totalProductsResult.count || 0,
   };
 }
