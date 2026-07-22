@@ -43,11 +43,11 @@ export function Navbar() {
   ];
 
   return (
-    <header className="w-full bg-white/90 backdrop-blur-md border-b border-border-warm shadow-sm">
-      <div className="container mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+    <header className="w-full bg-white/95 backdrop-blur-md border-b border-border-warm shadow-sm">
+      <div className="container mx-auto px-3 sm:px-4 md:px-8 h-16 md:h-20 flex items-center justify-between">
         {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-3 group" onClick={closeMobileMenu}>
-          <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-accent-gold shadow-sm group-hover:border-primary-red transition-colors">
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0" onClick={closeMobileMenu}>
+          <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-accent-gold shadow-sm group-hover:border-primary-red transition-colors shrink-0">
             <Image
               src="/images/logo.jpeg"
               alt={siteConfig.name}
@@ -57,11 +57,11 @@ export function Navbar() {
             />
           </div>
           <div className="flex flex-col">
-            <h1 className="font-heading font-extrabold text-lg md:text-xl text-primary-red leading-tight flex items-center gap-1.5">
+            <h1 className="font-heading font-extrabold text-base md:text-xl text-primary-red leading-tight flex items-center gap-1.5 whitespace-nowrap">
               <span>{siteConfig.name}</span>
               <span className="font-telugu text-sm text-primary-green hidden md:inline">({siteConfig.nameTelugu})</span>
             </h1>
-            <span className="text-xs text-accent-gold-dark font-bold tracking-widest">{siteConfig.tagline}</span>
+            <span className="text-[10px] md:text-xs text-accent-gold-dark font-bold tracking-widest uppercase">{siteConfig.tagline}</span>
           </div>
         </Link>
 
