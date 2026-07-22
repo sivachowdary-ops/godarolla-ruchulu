@@ -8,7 +8,7 @@ import { Database, Plus, Search, Edit, Trash2, X, Save, Image as ImageIcon, Chec
 import Image from 'next/image';
 import imageCompression from 'browser-image-compression';
 import { formatCurrency } from '@/lib/utils';
-import { ProductCard } from '@/components/product/ProductCard';
+import { AdminProductCard } from '@/components/admin/AdminProductCard';
 
 interface ProductsClientProps {
   initialProducts: Product[];
@@ -492,7 +492,7 @@ export default function ProductsClient({ initialProducts, categories }: Products
             <div className="w-full md:w-1/3 p-6 bg-bg-cream-dark flex flex-col">
               <h3 className="font-heading font-bold text-lg text-text-charcoal mb-6 border-b border-border-warm pb-2">Live Preview</h3>
               <div className="flex-grow flex items-center justify-center bg-white border border-border-warm rounded-xl p-4 shadow-sm scale-90 md:scale-100 origin-top">
-                <ProductCard product={previewProduct} />
+                <AdminProductCard product={previewProduct} />
               </div>
             </div>
 
