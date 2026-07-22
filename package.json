@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.7",
     "browser-image-compression": "^2.0.2",
     "jose": "^6.2.3",

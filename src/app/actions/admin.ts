@@ -1,51 +1,67 @@
 'use server';
 
-import { getAdminSupabase } from '@/lib/supabase';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
-import { SignJWT, jwtVerify } from 'jose';
-
-const SECRET_KEY = new TextEncoder().encode(process.env.ADMIN_PASSWORD || 'default_secret');
 
 export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  const validEmail = process.env.ADMIN_EMAIL;
-  const validPassword = process.env.ADMIN_PASSWORD;
+  const supabase = await createClient();
 
-  if (email === validEmail && password === validPassword) {
-    const token = await new SignJWT({ admin: true })
-      .setProtectedHeader({ alg: 'HS256' })
-      .setExpirationTime('24h')
-      .sign(SECRET_KEY);
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    (await cookies()).set('admin_session', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 24 // 24 hours
-    });
-
-    return { success: true };
+  if (error) {
+    return { success: false, error: 'Invalid credentials' };
   }
 
-  return { success: false, error: 'Invalid credentials' };
-}
+  // After a successful login, we also should check if this user is actually an admin
+  // Wait, checkAuth() is for protected routes. But we might want to check here as well to fail early.
+  // We can do it here, or let the dashboard fail. Let's do it here for better UX.
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    // Check if user is in admins table
+    const { getAdminSupabase } = await import('@/lib/supabase');
+    const adminDb = getAdminSupabase();
+    const { data: adminData, error: adminError } = await adminDb
+      .from('admins')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
 
-export async function logout() {
-  (await cookies()).delete('admin_session');
+    if (adminError || !adminData) {
+      // Determine if this is the first administrator
+      const { count } = await adminDb
+        .from('admins')
+        .select('*', { count: 'exact', head: true });
+
+      if (count === 0) {
+        // Automatically create the first admin record
+        const { error: insertError } = await adminDb
+          .from('admins')
+          .insert({
+            user_id: user.id,
+            email: user.email,
+            role: 'super_admin',
+          });
+
+        console.log(insertError);
+      } else {
+        // Not an admin, sign out and reject
+        await supabase.auth.signOut();
+        return { success: false, error: 'Unauthorized: Insufficient privileges' };
+      }
+    }
+  }
+
   return { success: true };
 }
 
-export async function verifyAdminSession() {
-  const token = (await cookies()).get('admin_session')?.value;
-  if (!token) return false;
-  
-  try {
-    await jwtVerify(token, SECRET_KEY);
-    return true;
-  } catch (err) {
-    return false;
-  }
+export async function logout() {
+  const supabase = await createClient();
+  await supabase.auth.signOut();
+  return { success: true };
 }

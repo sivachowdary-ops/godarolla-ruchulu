@@ -1,14 +1,7 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter, Noto_Sans_Telugu } from 'next/font/google';
 import './globals.css';
-import { CartProvider } from '@/context/CartContext';
-import { Navbar } from '@/components/layout/Navbar';
-import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
-import { Footer } from '@/components/layout/Footer';
-import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
-import { CartDrawer } from '@/components/cart/CartDrawer';
-import { CheckoutModal } from '@/components/checkout/CheckoutModal';
-import { FloatingCartButton } from '@/components/ui/FloatingCartButton';
+
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
@@ -112,18 +105,7 @@ export default function RootLayout({
       className={`${playfairDisplay.variable} ${inter.variable} ${notoSansTelugu.variable}`}
     >
       <body className="font-body bg-bg-cream text-text-charcoal antialiased">
-        <CartProvider>
-          <div className="sticky top-0 z-50 w-full flex flex-col">
-            <AnnouncementBar />
-            <Navbar />
-          </div>
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-          <FloatingCartButton />
-          <CartDrawer />
-          <CheckoutModal />
-        </CartProvider>
+        {children}
       </body>
     </html>
   );
