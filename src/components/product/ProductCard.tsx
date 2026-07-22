@@ -34,7 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm card-hover border border-border-warm flex flex-col h-full p-3 md:p-4">
       {/* Product Image Link */}
-      <Link href={`/images/products/${product.slug}.webp`} className="block group">
+      <Link href={`/product/${product.slug}`} className="block group">
         <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-bg-cream-dark">
           {imageError ? (
             <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-bg-cream to-accent-gold/10 text-text-charcoal p-4 text-center">
@@ -43,7 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           ) : (
             <Image
-              src={`/images/products/${product.slug}.webp`}
+              src={product.image || `/images/products/${product.slug}.jpg`}
               alt={product.name}
               fill
               sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
