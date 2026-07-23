@@ -2,13 +2,13 @@ import { getProductBySlug, getProducts } from '@/lib/services/productsService';
 import { ProductDetailClient } from './ProductDetailClient';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const product = await getProductBySlug(slug);
   
   let relatedProducts: any[] = [];

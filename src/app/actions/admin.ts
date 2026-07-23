@@ -28,12 +28,6 @@ export async function login(formData: FormData) {
     return { success: false, error: `Login failed: ${signInError.message}` };
   }
 
-<<<<<<< HEAD
-  // After a successful login, we also should check if this user is actually an admin
-  const { data: { user } } = await supabase.auth.getUser();
-  if (user) {
-    // Check if user is in admins table
-=======
   console.log('[AUTH] signInWithPassword succeeded for user:', signInData.user?.id);
 
   // Step 2: Verify user session
@@ -48,7 +42,6 @@ export async function login(formData: FormData) {
 
   // Step 3: Check admin authorization via admins table
   try {
->>>>>>> 89fd0025612a371fb7876140adacbe2ee2130c9e
     const { getAdminSupabase } = await import('@/lib/supabase');
     const adminDb = getAdminSupabase();
 
@@ -58,28 +51,17 @@ export async function login(formData: FormData) {
       .eq('user_id', user.id)
       .single();
 
-<<<<<<< HEAD
-    console.log("Reached login action");
-    console.log("User", user);
-    console.log("Admin query", adminData);
-    console.log("Admin error", adminError);
-
-    if (adminError || !adminData) {
-      // Determine if this is the first administrator
-=======
     console.log('[AUTH] Admin lookup result:', { adminData, adminError: adminError?.message, adminErrorCode: adminError?.code });
 
     if (adminError || !adminData) {
       // Check if this is a "table doesn't exist" error
       if (adminError?.code === '42P01' || adminError?.message?.includes('relation') || adminError?.message?.includes('does not exist')) {
         console.error('[AUTH] The "admins" table does not exist in Supabase! Please create it.');
-        // Auto-proceed: if the admins table doesn't exist, treat authenticated user as admin
         console.log('[AUTH] Bypassing admin check — admins table missing. Authenticated user allowed.');
         return { success: true };
       }
 
       // Determine if this is the first administrator (table exists but is empty)
->>>>>>> 89fd0025612a371fb7876140adacbe2ee2130c9e
       const { count, error: countError } = await adminDb
         .from('admins')
         .select('*', { count: 'exact', head: true });
@@ -88,7 +70,6 @@ export async function login(formData: FormData) {
 
       if (countError) {
         console.error('[AUTH] Failed to count admins:', countError.message);
-        // If we can't even count, allow authenticated user through
         return { success: true };
       }
 
@@ -102,17 +83,13 @@ export async function login(formData: FormData) {
             email: user.email,
             role: 'super_admin',
           });
-<<<<<<< HEAD
-=======
 
         if (insertError) {
           console.error('[AUTH] Failed to create admin record:', insertError.message, insertError.code);
-          // Don't block login if admin record creation fails — user is authenticated
           return { success: true };
         }
 
         console.log('[AUTH] First admin record created successfully');
->>>>>>> 89fd0025612a371fb7876140adacbe2ee2130c9e
       } else {
         // Table has admins but this user isn't one — reject
         console.log('[AUTH] User is not in admins table and table is not empty. Rejecting.');
@@ -124,8 +101,6 @@ export async function login(formData: FormData) {
     }
   } catch (err: any) {
     console.error('[AUTH] Admin check threw exception:', err.message);
-    // If admin check fails entirely (e.g., missing service role key), still allow authenticated user
-    // This makes login work even without the admins table / service role key
     return { success: true };
   }
 

@@ -23,15 +23,6 @@ export async function checkAuth(): Promise<void> {
       .eq('user_id', user.id)
       .single();
 
-<<<<<<< HEAD
-  console.log("Reached checkAuth");
-  console.log("User", user);
-  console.log("Admin query", adminData);
-  console.log("Admin error", adminError);
-
-  if (adminError || !adminData) {
-    throw new Error('Unauthorized: Insufficient privileges');
-=======
     if (adminError) {
       // If table doesn't exist or service key is missing, allow authenticated user
       if (adminError.code === '42P01' || adminError.message?.includes('relation') || adminError.message?.includes('does not exist')) {
@@ -60,7 +51,6 @@ export async function checkAuth(): Promise<void> {
     }
     console.error('[AUTH] checkAuth exception:', err.message);
     return; // Allow authenticated user on unexpected errors
->>>>>>> 89fd0025612a371fb7876140adacbe2ee2130c9e
   }
 }
 

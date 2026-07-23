@@ -238,27 +238,42 @@ export async function deleteProductAction(id: string) {
 
 export async function getDashboardStats() {
   await checkAuth();
-  const supabase = getAdminSupabase();
 
-  const [activeProductsResult, categoriesResult, totalProductsResult] = await Promise.all([
-    supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
-    supabase.from('categories').select('*', { count: 'exact', head: true }),
-    supabase.from('products').select('*', { count: 'exact', head: true }),
-  ]);
+  // Try Supabase first, fall back to static product catalog
+  try {
+    const supabase = getAdminSupabase();
 
-  if (activeProductsResult.error) {
-    console.error('Error fetching active products count:', activeProductsResult.error);
+    const [activeProductsResult, categoriesResult, totalProductsResult] = await Promise.all([
+      supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true),
+      supabase.from('categories').select('*', { count: 'exact', head: true }),
+      supabase.from('products').select('*', { count: 'exact', head: true }),
+    ]);
+
+    // If queries succeeded and returned data, use Supabase counts
+    if (!activeProductsResult.error && !totalProductsResult.error &&
+        totalProductsResult.count !== null && totalProductsResult.count > 0) {
+      return {
+        activeProducts: activeProductsResult.count || 0,
+        totalCategories: categoriesResult.count || 0,
+        totalProducts: totalProductsResult.count || 0,
+      };
+    }
+
+    // If DB is empty or errored, fall through to static fallback
+    console.log('[DASHBOARD] Supabase returned 0 or errored, falling back to static catalog');
+  } catch (err: any) {
+    console.log('[DASHBOARD] Supabase admin client unavailable:', err.message, '— using static catalog');
   }
-  if (categoriesResult.error) {
-    console.error('Error fetching categories count:', categoriesResult.error);
-  }
-  if (totalProductsResult.error) {
-    console.error('Error fetching total products count:', totalProductsResult.error);
-  }
+
+  // Fallback: compute stats from static product catalog
+  const { products: staticProducts } = await import('@/data/products');
+  const activeProducts = staticProducts.filter((p) => p.isActive);
+  const uniqueCategories = new Set(activeProducts.map((p) => p.category));
 
   return {
-    activeProducts: activeProductsResult.count || 0,
-    totalCategories: categoriesResult.count || 0,
-    totalProducts: totalProductsResult.count || 0,
+    activeProducts: activeProducts.length,
+    totalCategories: uniqueCategories.size,
+    totalProducts: staticProducts.length,
   };
 }
+
