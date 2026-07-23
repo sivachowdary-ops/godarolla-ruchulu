@@ -36,6 +36,17 @@ export function CheckoutModal() {
   const [errors, setErrors] = useState<Partial<Record<keyof CheckoutFormData, string>>>({});
   const [successOrderInfo, setSuccessOrderInfo] = useState<{ id: string; msgUrl: string } | null>(null);
 
+  useEffect(() => {
+    if (isCheckoutOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isCheckoutOpen]);
+
   if (!isCheckoutOpen) return null;
 
   const total = getCartTotal();
@@ -134,17 +145,6 @@ export function CheckoutModal() {
     clearCart();
     handleClose();
   };
-
-  useEffect(() => {
-    if (isCheckoutOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isCheckoutOpen]);
 
   return (
     <div className="fixed inset-0 z-[130] overflow-y-auto bg-text-charcoal/60 backdrop-blur-sm flex items-center justify-center p-4">
